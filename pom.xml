@@ -9,7 +9,7 @@
   <version>v0.0.0</version>
 
   <name>ai-tg-bot</name>
-  <!--<url>http://www.example.com</url>-->
+  <url>https://t.me/AiBot456_bot</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,11 +18,11 @@
   </properties>
 
   <dependencies>
+    <!--Spring-->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>6.1.8</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -31,13 +31,26 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>6.1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
       <version>6.1.8</version>
     </dependency>
+    <!--Telegram-->
     <dependency>
       <groupId>org.telegram</groupId>
       <artifactId>telegrambots</artifactId>
       <version>6.8.0</version>
+    </dependency>
+    <!--etc.-->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

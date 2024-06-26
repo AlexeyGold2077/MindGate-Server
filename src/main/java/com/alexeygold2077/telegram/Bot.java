@@ -46,7 +46,7 @@ public class Bot extends TelegramLongPollingBot {
         if (textMsg.equals("/start"))
             return "Приветствую, бот знает много цитат. Жми /get, чтобы получить случайную из них";
         if (textMsg.equals("/get"))
-            return "storage.getRandQuote()";
+            return "иди нахуй или умри!";
         else
             return "Сообщение не распознано";
     }
