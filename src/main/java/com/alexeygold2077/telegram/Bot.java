@@ -25,10 +25,10 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
-                Message inMess = update.getMessage();
-                String chatId = inMess.getChatId().toString();
+                Message message = update.getMessage();
+                String chatId = message.getChatId().toString();
 
-                String response = parseMessage(inMess.getText());
+                String response = parseMessage(message.getText());
 
                 SendMessage outMess = new SendMessage();
 
@@ -44,10 +44,8 @@ public class Bot extends TelegramLongPollingBot {
 
     public String parseMessage(String textMsg) {
         if (textMsg.equals("/start"))
-            return "Приветствую, бот знает много цитат. Жми /get, чтобы получить случайную из них";
-        if (textMsg.equals("/get"))
-            return "иди нахуй или умри!";
+            return "Стартуем!";
         else
-            return "Сообщение не распознано";
+            return "Не понял...";
     }
 }
