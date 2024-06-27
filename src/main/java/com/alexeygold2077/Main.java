@@ -1,28 +1,19 @@
 package com.alexeygold2077;
 
-import com.alexeygold2077.proxyapi.Proxyapi;
-import com.alexeygold2077.telegram.Bot;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import com.alexeygold2077.api.proxyapi.Proxyapi;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
+
+    public static Proxyapi proxyapi = new Proxyapi("sk-YLhidrIF1tbb6UKEizF4tIW1nTKY1yGK", "gpt-3.5-turbo-0125");
+
     public static void main(String[] args) throws IOException {
-
-        /*ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-
-        try {
-            TelegramBotsApi telegramBotsApi = context.getBean(TelegramBotsApi.class);
-            telegramBotsApi.registerBot(context.getBean(Bot.class));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }*/
-
-        Proxyapi proxyapi = new Proxyapi();
-
-        proxyapi.request();
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            System.out.print("Введите запрос: ");
+            System.out.println(proxyapi.sendMessage("user", in.nextLine()));
+        }
     }
 }

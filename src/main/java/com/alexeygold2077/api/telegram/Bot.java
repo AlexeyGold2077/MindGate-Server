@@ -1,10 +1,14 @@
-package com.alexeygold2077.telegram;
+/*
+package com.alexeygold2077.api.telegram;
 
+import com.alexeygold2077.Main;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.io.IOException;
 
 public class Bot extends TelegramLongPollingBot {
 
@@ -37,15 +41,16 @@ public class Bot extends TelegramLongPollingBot {
 
                 execute(outMess);
             }
-        } catch (TelegramApiException e) {
+        } catch (TelegramApiException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String parseMessage(String textMsg) {
+    public String parseMessage(String textMsg) throws IOException {
         if (textMsg.equals("/start"))
             return "Стартуем!";
         else
-            return "Не понял...";
+            return Main.proxyapi.request(textMsg);
     }
 }
+*/
