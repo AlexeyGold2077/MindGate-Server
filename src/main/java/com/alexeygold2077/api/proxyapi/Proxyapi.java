@@ -1,13 +1,12 @@
 package com.alexeygold2077.api.proxyapi;
 
 import com.alexeygold2077.api.proxyapi.DTO.RequestData;
-import com.alexeygold2077.api.proxyapi.DTO.ResponseData;
+import com.alexeygold2077.api.proxyapi.DTO.ResponseDefault;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Proxyapi {
@@ -28,19 +27,17 @@ public class Proxyapi {
     }
 
     public String sendMessage(String role, String message) throws IOException {
-        return parseResponseToMessage(request(role, message));
+        requestData.addMessage(role, message);
+        return parseResponseToMessage(request());
     }
 
     private String parseResponseToMessage(String response) throws IOException {
-
         ObjectMapper objectMapper = new ObjectMapper();
-
-        ResponseData responseData = objectMapper.readValue(response, ResponseData.class);
-
-        return responseData.getChoices().get(0).getMessage().getContent();
+        ResponseDefault responseDefault = objectMapper.readValue(response, ResponseDefault.class);
+        return responseDefault.getChoices().get(0).getMessage().getContent();
     }
 
-    private String request(String role, String message) throws IOException {
+    private String request() throws IOException {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(100, TimeUnit.SECONDS)
@@ -48,14 +45,10 @@ public class Proxyapi {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        requestData.addMessage(role, message);
-
-        okhttp3.Request request = null;
-
-        String jsonString = objectMapper.writeValueAsString(this.requestData);
-        request = new okhttp3.Request.Builder()
+        Request request = new Request.Builder()
                 .url(OPENAI_URL)
-                .post(RequestBody.create(jsonString, MediaType.get("application/json; charset=utf-8")))
+                .post(RequestBody.create(objectMapper.writeValueAsString(requestData),
+                        MediaType.get("application/json; charset=utf-8")))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + PROXY_API_KEY)
                 .build();

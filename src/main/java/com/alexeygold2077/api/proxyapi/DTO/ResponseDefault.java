@@ -2,7 +2,7 @@ package com.alexeygold2077.api.proxyapi.DTO;
 
 import java.util.List;
 
-public class ResponseData {
+public class ResponseDefault {
     private String id;
     private String object;
     private String created;
