@@ -28,11 +28,8 @@ public class Proxyapi {
 
     public String sendMessage(String role, String message) throws IOException {
         requestData.addMessage(role, message);
-        return parseResponseToMessage(request());
-    }
-
-    private String parseResponseToMessage(String response) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        String response = request();
         ResponseDefault responseDefault = objectMapper.readValue(response, ResponseDefault.class);
         return responseDefault.getChoices().get(0).getMessage().getContent();
     }

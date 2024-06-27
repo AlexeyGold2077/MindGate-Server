@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static Proxyapi proxyapi = new Proxyapi("sk-YLhidrIF1tbb6UKEizF4tIW1nTKY1yGK", "gpt-3.5-turbo-0125");
+    public static Proxyapi proxyapi = new Proxyapi("sk-YLhidrIF1tbb6UKEizF4tIW1nTKY1yGK", "gpt-4o");
 
     public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(System.in);
