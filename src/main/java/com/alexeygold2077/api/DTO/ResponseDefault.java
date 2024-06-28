@@ -1,4 +1,4 @@
-package com.alexeygold2077.api.proxyapi.DTO;
+package com.alexeygold2077.api.DTO;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.alexeygold2077.api.proxyapi;
+package com.alexeygold2077.api;
 
-import com.alexeygold2077.api.proxyapi.DTO.RequestData;
-import com.alexeygold2077.api.proxyapi.DTO.ResponseDefault;
+import com.alexeygold2077.api.DTO.RequestData;
+import com.alexeygold2077.api.DTO.ResponseDefault;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
@@ -24,17 +24,23 @@ public class Proxyapi {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
         this.requestData = new RequestData(this.MODEL, new LinkedList<>());
-        requestData.addMessage("system", "You answer questions briefly but offer to explain in more detail.");
     }
 
     public String sendMessageAsUser(String message) throws IOException {
+        return sendMessage("user", message);
+    }
+    public String sendMessageAsSystem(String message) throws IOException {
+        return sendMessage("system", message);
+    }
+
+    private String sendMessage(String role, String message) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        requestData.addMessage("user", message);
-        ResponseDefault responseDefault = objectMapper.readValue(request(), ResponseDefault.class);
+        requestData.addMessage(role, message);
+        ResponseDefault responseDefault = objectMapper.readValue(messgeRequest(), ResponseDefault.class);
         return responseDefault.choices().get(0).message().content();
     }
 
-    private String request() throws IOException {
+    private String messgeRequest() throws IOException {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(100, TimeUnit.SECONDS)
                 .build();
