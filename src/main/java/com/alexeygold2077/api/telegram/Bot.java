@@ -1,6 +1,7 @@
 package com.alexeygold2077.api.telegram;
 
 import com.alexeygold2077.Main;
+import com.alexeygold2077.Private;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class Bot extends TelegramLongPollingBot {
 
     private static final String BOT_NAME = "AiBot456_bot";
-    private static final String BOT_TOKEN = "7477349748:AAG9KU6hz7_YhuxXYCwDsozQYOOrESLWnKY";
+    private static final String BOT_TOKEN = Private.TG_TOKEN;
 
     @Override
     public String getBotUsername() {
@@ -47,7 +48,11 @@ public class Bot extends TelegramLongPollingBot {
 
     public String parseMessage(String textMsg) throws IOException {
         if (textMsg.equals("/start"))
-            return "Стартуем!";
+            // TODO
+            return "Тут будет инструкция по использованию бота.";
+        if (textMsg.equals("/reset"))
+            // TODO
+            return "Реализовать создания новой сессии с ботом.";
         else
             return Main.proxyapi.sendMessageAsUser(textMsg);
     }
