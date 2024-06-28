@@ -9,13 +9,16 @@ public record ResponseDefault(String id,
                               List<Choice> choices,
                               Usage usage,
                               String system_fingerprint) {
+
     public record Choice(String index,
-                     Message message,
-                     String logprobs,
-                     String finish_reason) {
-        public record Message(String role, String content) {}
+                         Message message,
+                         String logprobs,
+                         String finish_reason) {
+
+        public record Message(String role,
+                              String content) {}
     }
     public record Usage(String prompt_tokens,
-                    String completion_tokens,
-                    String total_tokens) {}
+                        String completion_tokens,
+                        String total_tokens) {}
 }

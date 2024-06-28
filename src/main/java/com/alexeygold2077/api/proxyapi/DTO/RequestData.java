@@ -12,5 +12,5 @@ public record RequestData(String model,
     }
 
     public record Message(String role,
-                   String content) {}
+                          String content) {}
 }

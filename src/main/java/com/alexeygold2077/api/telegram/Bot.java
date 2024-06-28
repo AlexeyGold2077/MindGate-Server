@@ -1,4 +1,3 @@
-/*
 package com.alexeygold2077.api.telegram;
 
 import com.alexeygold2077.Main;
@@ -50,7 +49,6 @@ public class Bot extends TelegramLongPollingBot {
         if (textMsg.equals("/start"))
             return "Стартуем!";
         else
-            return Main.proxyapi.request(textMsg);
+            return Main.proxyapi.sendMessageAsUser(textMsg);
     }
 }
-*/
