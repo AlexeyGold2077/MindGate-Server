@@ -13,7 +13,7 @@ public class Main {
         Scanner in = new Scanner(System.in);
         while (true) {
             System.out.print("Введите запрос: ");
-            System.out.println(proxyapi.sendMessage("user", in.nextLine()));
+            System.out.println(proxyapi.sendMessageAsUser("user", in.nextLine()));
         }
     }
 }

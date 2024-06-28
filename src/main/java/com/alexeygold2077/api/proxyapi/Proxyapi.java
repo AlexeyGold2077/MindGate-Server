@@ -23,15 +23,16 @@ public class Proxyapi {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
         this.requestData = new RequestData(this.MODEL, new LinkedList<>());
-        requestData.addMessage("system", "You are a helpful assistant.");
+        requestData.addMessage("system", "You answer questions briefly but offer to explain in more " +
+                "detail, and if they ask you to tell in more detail, then you tell in great detail.");
     }
 
-    public String sendMessage(String role, String message) throws IOException {
-        requestData.addMessage(role, message);
+    public String sendMessageAsUser(String role, String message) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        requestData.addMessage(role, message);
         String response = request();
         ResponseDefault responseDefault = objectMapper.readValue(response, ResponseDefault.class);
-        return responseDefault.getChoices().get(0).getMessage().getContent();
+        return responseDefault.choices().get(0).message().content();
     }
 
     private String request() throws IOException {
