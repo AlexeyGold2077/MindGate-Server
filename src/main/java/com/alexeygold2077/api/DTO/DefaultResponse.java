@@ -2,7 +2,8 @@ package com.alexeygold2077.api.DTO;
 
 import java.util.List;
 
-public record ResponseDefault(String id,
+public record DefaultResponse(String detail,
+                              String id,
                               String object,
                               String created,
                               String model,

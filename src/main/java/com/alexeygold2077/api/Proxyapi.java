@@ -1,7 +1,7 @@
 package com.alexeygold2077.api;
 
-import com.alexeygold2077.api.DTO.RequestData;
-import com.alexeygold2077.api.DTO.ResponseDefault;
+import com.alexeygold2077.api.DTO.Dialogue;
+import com.alexeygold2077.api.DTO.DefaultResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
@@ -12,18 +12,22 @@ import java.util.concurrent.TimeUnit;
 
 public class Proxyapi {
 
+    private final OkHttpClient okHttpClient;
+    private final ObjectMapper objectMapper;
+    private final Dialogue dialogue;
+
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
     private final String ANTHROPIC_URL = "https://api.proxyapi.ru/anthropic/v1/messages";
 
     private final String PROXY_API_KEY;
     private final String MODEL;
 
-    private final RequestData requestData;
-
     public Proxyapi(String PROXY_API_KEY, String MODEL) {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
-        this.requestData = new RequestData(this.MODEL, new LinkedList<>());
+        this.okHttpClient = new OkHttpClient.Builder().readTimeout(100, TimeUnit.SECONDS).build();
+        this.objectMapper = new ObjectMapper();
+        this.dialogue = new Dialogue(this.MODEL, new LinkedList<>());
     }
 
     public String sendMessageAsUser(String message) throws IOException {
@@ -34,24 +38,29 @@ public class Proxyapi {
     }
 
     private String sendMessage(String role, String message) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        requestData.addMessage(role, message);
-        ResponseDefault responseDefault = objectMapper.readValue(messgeRequest(), ResponseDefault.class);
-        return responseDefault.choices().get(0).message().content();
+        dialogue.addMessage(role, message);
+        DefaultResponse defaultResponse = objectMapper.readValue(messageRequest(), DefaultResponse.class);
+        return defaultResponse.choices().get(0).message().content();
     }
 
-    private String messgeRequest() throws IOException {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .readTimeout(100, TimeUnit.SECONDS)
-                .build();
-        ObjectMapper objectMapper = new ObjectMapper();
+    private String messageRequest() throws IOException {
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        String jsonRequest = objectMapper.writeValueAsString(dialogue);
+        RequestBody requestBody = RequestBody.create(jsonRequest, JSON);
         Request request = new Request.Builder()
                 .url(OPENAI_URL)
-                .post(RequestBody.create(objectMapper.writeValueAsString(requestData),
-                        MediaType.get("application/json; charset=utf-8")))
-                .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + PROXY_API_KEY)
+                .post(requestBody)
                 .build();
-        return Objects.requireNonNull(client.newCall(request).execute().body()).string();
+        String responseBody = null;
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("ERROR: " + response.code() + " " + response.message());
+            }
+            responseBody = response.body().string();
+        } catch (IOException ioe) {
+            System.out.println("ERROR: " + ioe);
+        }
+        return responseBody;
     }
 }
