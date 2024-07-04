@@ -26,11 +26,11 @@ public class Proxyapi {
         this.MODEL = MODEL;
         this.okHttpClient = new OkHttpClient.Builder().readTimeout(100, TimeUnit.SECONDS).build();
         this.objectMapper = new ObjectMapper();
-        this.chatCompletionRequest = new ChatCompletionRequest(this.MODEL.getName(), new LinkedList<>());
+        this.chatCompletionRequest = new ChatCompletionRequest(new LinkedList<>(), this.MODEL.getName());
     }
 
     public String sendMessage(Roles role, String message) throws IOException {
-        chatCompletionRequest.addMessage(role.getName(), message);
+        chatCompletionRequest.addMessage(role.getName(), message, "user");
         ChatCompletionResponse chatCompletionResponse = objectMapper.readValue(messageRequest(), ChatCompletionResponse.class);
         return chatCompletionResponse.toString()/*.choices().get(0).message().content()*/;
     }
@@ -38,6 +38,7 @@ public class Proxyapi {
     private String messageRequest() throws IOException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         String jsonRequest = objectMapper.writeValueAsString(chatCompletionRequest);
+        System.out.println(jsonRequest.toString());
         RequestBody requestBody = RequestBody.create(jsonRequest, JSON);
         Request request = new Request.Builder()
                 .url(OPENAI_URL)

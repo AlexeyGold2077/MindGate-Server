@@ -2,15 +2,14 @@ package com.alexeygold2077.api.DTO;
 
 import java.util.List;
 
-public record ChatCompletionRequest(String model,
-                                    List<Message> messages) {
+public record ChatCompletionRequest(List<Message> messages,
+                                    String model) {
 
-    public void addMessage(String role, String message) {
-        messages.add(
-                new Message(role, message)
-        );
+    public void addMessage(String message, String role, String name) {
+        messages.add(new Message(role, message, name));
     }
 
-    public record Message(String role,
-                          String content) {}
+    public record Message(String content,
+                          String role,
+                          String name) {}
 }
