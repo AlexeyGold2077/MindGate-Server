@@ -1,7 +1,7 @@
 package com.alexeygold2077.api;
 
-import com.alexeygold2077.api.DTO.Dialogue;
-import com.alexeygold2077.api.DTO.DefaultResponse;
+import com.alexeygold2077.api.DTO.ChatCompletionRequest;
+import com.alexeygold2077.api.DTO.ChatCompletionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
@@ -13,7 +13,7 @@ public class Proxyapi {
 
     private final OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
-    private final Dialogue dialogue;
+    private final ChatCompletionRequest chatCompletionRequest;
 
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
     private final String ANTHROPIC_URL = "https://api.proxyapi.ru/anthropic/v1/messages";
@@ -26,25 +26,18 @@ public class Proxyapi {
         this.MODEL = MODEL;
         this.okHttpClient = new OkHttpClient.Builder().readTimeout(100, TimeUnit.SECONDS).build();
         this.objectMapper = new ObjectMapper();
-        this.dialogue = new Dialogue(this.MODEL.getName(), new LinkedList<>());
+        this.chatCompletionRequest = new ChatCompletionRequest(this.MODEL.getName(), new LinkedList<>());
     }
 
-    public String sendMessageAsUser(String message) throws IOException {
-        return sendMessage("user", message);
-    }
-    public String sendMessageAsSystem(String message) throws IOException {
-        return sendMessage("system", message);
-    }
-
-    private String sendMessage(String role, String message) throws IOException {
-        dialogue.addMessage(role, message);
-        DefaultResponse defaultResponse = objectMapper.readValue(messageRequest(), DefaultResponse.class);
-        return defaultResponse.choices().get(0).message().content();
+    public String sendMessage(Roles role, String message) throws IOException {
+        chatCompletionRequest.addMessage(role.getName(), message);
+        ChatCompletionResponse chatCompletionResponse = objectMapper.readValue(messageRequest(), ChatCompletionResponse.class);
+        return chatCompletionResponse.toString()/*.choices().get(0).message().content()*/;
     }
 
     private String messageRequest() throws IOException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        String jsonRequest = objectMapper.writeValueAsString(dialogue);
+        String jsonRequest = objectMapper.writeValueAsString(chatCompletionRequest);
         RequestBody requestBody = RequestBody.create(jsonRequest, JSON);
         Request request = new Request.Builder()
                 .url(OPENAI_URL)
@@ -63,6 +56,14 @@ public class Proxyapi {
         return responseBody;
     }
 
+    public enum Roles {
+        USER("user"),
+        SYSTEM("system");
+        private final String name;
+        Roles(String code) { this.name = code; }
+        public String getName() { return name; }
+    }
+
     public enum OpenAIModels {
         GPT4O("gpt-4o"),
         GPT4TURBO("gpt-4-turbo"),
@@ -70,9 +71,7 @@ public class Proxyapi {
         GPT35TURBO0613("gpt-3.5-turbo-0613"),
         TEXTEMBEDDING3SMALL("text-embedding-3-small");
         private final String name;
-            OpenAIModels(String code){
-                this.name = code;
-        }
+        OpenAIModels(String code) { this.name = code; }
         public String getName() { return name; }
     }
 }
