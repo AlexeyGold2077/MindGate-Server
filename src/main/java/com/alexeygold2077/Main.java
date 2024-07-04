@@ -9,8 +9,7 @@ public class Main {
     public static Proxyapi proxyapi;
 
     public static void main(String[] args) throws IOException {
-        proxyapi = new Proxyapi(Private.PROXYAPI_TOKEN, "gpt-4o");
-        System.out.println(proxyapi.sendMessageAsSystem("You are agressive!"));
+        proxyapi = new Proxyapi(Private.PROXYAPI_TOKEN, Proxyapi.OpenAIModels.GPT35TURBO0613);
         System.out.println(proxyapi.sendMessageAsUser("Hello!"));
     }
 }

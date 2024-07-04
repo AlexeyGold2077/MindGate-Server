@@ -7,7 +7,6 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Proxyapi {
@@ -20,14 +19,14 @@ public class Proxyapi {
     private final String ANTHROPIC_URL = "https://api.proxyapi.ru/anthropic/v1/messages";
 
     private final String PROXY_API_KEY;
-    private final String MODEL;
+    private final OpenAIModels MODEL;
 
-    public Proxyapi(String PROXY_API_KEY, String MODEL) {
+    public Proxyapi(String PROXY_API_KEY, OpenAIModels MODEL) {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
         this.okHttpClient = new OkHttpClient.Builder().readTimeout(100, TimeUnit.SECONDS).build();
         this.objectMapper = new ObjectMapper();
-        this.dialogue = new Dialogue(this.MODEL, new LinkedList<>());
+        this.dialogue = new Dialogue(this.MODEL.getName(), new LinkedList<>());
     }
 
     public String sendMessageAsUser(String message) throws IOException {
@@ -62,5 +61,18 @@ public class Proxyapi {
             System.out.println("ERROR: " + ioe);
         }
         return responseBody;
+    }
+
+    public enum OpenAIModels {
+        GPT4O("gpt-4o"),
+        GPT4TURBO("gpt-4-turbo"),
+        GPT35TURBO0125("gpt-3.5-turbo-0125"),
+        GPT35TURBO0613("gpt-3.5-turbo-0613"),
+        TEXTEMBEDDING3SMALL("text-embedding-3-small");
+        private final String name;
+            OpenAIModels(String code){
+                this.name = code;
+        }
+        public String getName() { return name; }
     }
 }
