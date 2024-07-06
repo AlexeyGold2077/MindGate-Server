@@ -2,14 +2,13 @@ package com.alexeygold2077.api.DTO;
 
 import java.util.List;
 
-public record ChatCompletionResponse(String detail,
-                                     String id,
-                                     List<Choice> choices,
-                                     String created,
-                                     String model,
-                                     String system_fingerprint,
-                                     String object,
-                                     Usage usage) {
+public record ChatCompletionResult(String id,
+                                   List<Choice> choices,
+                                   String created,
+                                   String model,
+                                   String system_fingerprint,
+                                   String object,
+                                   Usage usage) {
 
     public record Choice(String finish_reason,
                          String index,
@@ -53,7 +52,6 @@ public record ChatCompletionResponse(String detail,
     @Override
     public String toString() {
         return "ChatCompletionResponse{" +
-                "detail='" + detail + '\'' +
                 ", id='" + id + '\'' +
                 ", choices=" + choices +
                 ", created='" + created + '\'' +
