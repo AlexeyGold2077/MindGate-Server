@@ -1,7 +1,7 @@
-package com.alexeygold2077.api;
+package com.alexeygold2077;
 
-import com.alexeygold2077.api.DTO.ChatCompletionRequest;
-import com.alexeygold2077.api.DTO.ChatCompletionResult;
+import com.alexeygold2077.DTO.ChatCompletionRequest;
+import com.alexeygold2077.DTO.ChatCompletionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 

@@ -1,4 +1,4 @@
-package com.alexeygold2077.api.DTO;
+package com.alexeygold2077.DTO;
 
 import java.util.List;
 
