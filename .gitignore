@@ -31,3 +31,20 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Maven
+pom.xml.tag
+pom.xml.versionsBackup
+
+# IDE
+.idea/
+.settings/
+
+# Spring
+src/main/resources/application.properties
+
+# Other
+*.log
+*.tmp
+mvnw
+
