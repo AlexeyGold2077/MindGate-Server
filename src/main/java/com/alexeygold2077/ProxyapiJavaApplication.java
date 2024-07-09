@@ -1,6 +1,5 @@
 package com.alexeygold2077;
 
-import com.alexeygold2077.api.Proxyapi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
