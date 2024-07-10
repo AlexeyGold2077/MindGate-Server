@@ -16,6 +16,6 @@ public class SpringController {
 
     @GetMapping("/sendmessage")
     public String greeting(@RequestParam(value = "message") String message) throws IOException {
-        return ai.sendMessageAsUser(message);
+        return ai.getChatCompletionAsUser(message);
     }
 }

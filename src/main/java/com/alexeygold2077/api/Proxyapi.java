@@ -4,16 +4,17 @@ import com.alexeygold2077.api.DTO.ChatCompletionRequest;
 import com.alexeygold2077.api.DTO.ChatCompletionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class Proxyapi {
 
-    private final OkHttpClient okHttpClient;
+    @Autowired
+    private OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
     private final ChatCompletionRequest chatCompletionRequest;
 
@@ -26,22 +27,21 @@ public class Proxyapi {
     public Proxyapi(String PROXY_API_KEY, OpenAIModels MODEL) {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
-        this.okHttpClient = new OkHttpClient.Builder().readTimeout(100, TimeUnit.SECONDS).build();
         this.objectMapper = new ObjectMapper();
         this.chatCompletionRequest = new ChatCompletionRequest(new LinkedList<>(), this.MODEL.getName());
     }
 
-    public String sendMessageAsUser(String message) throws IOException {
-        return sendMessage(Roles.USER, message);
+    public String getChatCompletionAsUser(String message) throws IOException {
+        return getChatCompletion(Roles.USER, message);
     }
 
-    private String sendMessage(Roles role, String message) throws IOException {
+    private String getChatCompletion(Roles role, String message) throws IOException {
         chatCompletionRequest.addMessage(role.getName(), message, "user");
-        ChatCompletionResult chatCompletionResult = objectMapper.readValue(messageRequest(), ChatCompletionResult.class);
+        ChatCompletionResult chatCompletionResult = objectMapper.readValue(chatCompletionRequest(), ChatCompletionResult.class);
         return chatCompletionResult.choices().get(0).message().content();
     }
 
-    private String messageRequest() throws IOException {
+    private String chatCompletionRequest() throws IOException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         String jsonBody = objectMapper.writeValueAsString(chatCompletionRequest);
         RequestBody requestBody = RequestBody.create(jsonBody, JSON);
@@ -57,7 +57,7 @@ public class Proxyapi {
             }
             responseBody = response.body().string();
         } catch (NullPointerException npe) {
-            System.out.println("ERROR: NullPointerException while making request.");
+            throw new NullPointerException("ERROR: in messageRequest()");
         }
         return responseBody;
     }
@@ -71,11 +71,9 @@ public class Proxyapi {
     }
 
     public enum OpenAIModels {
+        GPT4("gpt-4"),
         GPT4O("gpt-4o"),
-        GPT4TURBO("gpt-4-turbo"),
-        GPT35TURBO0125("gpt-3.5-turbo-0125"),
-        GPT35TURBO0613("gpt-3.5-turbo-0613"),
-        TEXTEMBEDDING3SMALL("text-embedding-3-small");
+        GPT4TURBO("gpt-4-turbo");
         private final String name;
         OpenAIModels(String code) { this.name = code; }
         public String getName() { return name; }
