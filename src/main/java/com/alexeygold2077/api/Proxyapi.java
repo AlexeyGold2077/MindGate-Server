@@ -31,7 +31,11 @@ public class Proxyapi {
         this.chatCompletionRequest = new ChatCompletionRequest(new LinkedList<>(), this.MODEL.getName());
     }
 
-    public String sendMessage(Roles role, String message) throws IOException {
+    public String sendMessageAsUser(String message) throws IOException {
+        return sendMessage(Roles.USER, message);
+    }
+
+    private String sendMessage(Roles role, String message) throws IOException {
         chatCompletionRequest.addMessage(role.getName(), message, "user");
         ChatCompletionResult chatCompletionResult = objectMapper.readValue(messageRequest(), ChatCompletionResult.class);
         return chatCompletionResult.choices().get(0).message().content();

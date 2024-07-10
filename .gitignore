@@ -50,3 +50,6 @@ mvnw
 
 .DS_Store
 
+config.json
+
+application-dev.properties
