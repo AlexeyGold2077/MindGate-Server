@@ -2,13 +2,13 @@ package com.alexeygold2077.api.DTO;
 
 import java.util.List;
 
-public record ChatCompletionResult(String id,
-                                   List<Choice> choices,
-                                   String created,
-                                   String model,
-                                   String system_fingerprint,
-                                   String object,
-                                   Usage usage) {
+public record ProxyapiChatCompletionResult(String id,
+                                           List<Choice> choices,
+                                           String created,
+                                           String model,
+                                           String system_fingerprint,
+                                           String object,
+                                           Usage usage) {
 
     public record Choice(String finish_reason,
                          String index,

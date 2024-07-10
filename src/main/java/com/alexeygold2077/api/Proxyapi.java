@@ -1,7 +1,7 @@
 package com.alexeygold2077.api;
 
-import com.alexeygold2077.api.DTO.ChatCompletionRequest;
-import com.alexeygold2077.api.DTO.ChatCompletionResult;
+import com.alexeygold2077.api.DTO.ProxyapiChatCompletionRequest;
+import com.alexeygold2077.api.DTO.ProxyapiChatCompletionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class Proxyapi {
     @Autowired
     private OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
-    private final ChatCompletionRequest chatCompletionRequest;
+    private final ProxyapiChatCompletionRequest proxyapiChatCompletionRequest;
 
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
     private final String ANTHROPIC_URL = "https://api.proxyapi.ru/anthropic/v1/messages";
@@ -28,7 +28,7 @@ public class Proxyapi {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
         this.objectMapper = new ObjectMapper();
-        this.chatCompletionRequest = new ChatCompletionRequest(new LinkedList<>(), this.MODEL.getName());
+        this.proxyapiChatCompletionRequest = new ProxyapiChatCompletionRequest(new LinkedList<>(), this.MODEL.getName());
     }
 
     public String getChatCompletionAsUser(String message) throws IOException {
@@ -36,14 +36,15 @@ public class Proxyapi {
     }
 
     private String getChatCompletion(Roles role, String message) throws IOException {
-        chatCompletionRequest.addMessage(role.getName(), message, "user");
-        ChatCompletionResult chatCompletionResult = objectMapper.readValue(chatCompletionRequest(), ChatCompletionResult.class);
-        return chatCompletionResult.choices().get(0).message().content();
+        proxyapiChatCompletionRequest.addMessage(role.getName(), message, "user");
+        ProxyapiChatCompletionResult proxyapiChatCompletionResult = objectMapper.readValue(chatCompletionRequest(),
+                ProxyapiChatCompletionResult.class);
+        return proxyapiChatCompletionResult.choices().get(0).message().content();
     }
 
     private String chatCompletionRequest() throws IOException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        String jsonBody = objectMapper.writeValueAsString(chatCompletionRequest);
+        String jsonBody = objectMapper.writeValueAsString(proxyapiChatCompletionRequest);
         RequestBody requestBody = RequestBody.create(jsonBody, JSON);
         Request request = new Request.Builder()
                 .url(OPENAI_URL)
