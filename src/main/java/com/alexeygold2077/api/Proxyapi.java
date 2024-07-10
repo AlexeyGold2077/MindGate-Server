@@ -1,14 +1,12 @@
 package com.alexeygold2077.api;
 
 import com.alexeygold2077.api.DTO.ChatCompletionRequest;
-import com.alexeygold2077.api.DTO.ChatCompletionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
 @Component
 public class Proxyapi {
@@ -16,7 +14,6 @@ public class Proxyapi {
     @Autowired
     private OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
-    private final ChatCompletionRequest chatCompletionRequest;
 
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
     private final String ANTHROPIC_URL = "https://api.proxyapi.ru/anthropic/v1/messages";
@@ -28,20 +25,9 @@ public class Proxyapi {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
         this.objectMapper = new ObjectMapper();
-        this.chatCompletionRequest = new ChatCompletionRequest(new LinkedList<>(), this.MODEL.getName());
     }
 
-    public String getChatCompletionAsUser(String message) throws IOException {
-        return getChatCompletion(Roles.USER, message);
-    }
-
-    private String getChatCompletion(Roles role, String message) throws IOException {
-        chatCompletionRequest.addMessage(role.getName(), message, "user");
-        ChatCompletionResult chatCompletionResult = objectMapper.readValue(chatCompletionRequest(), ChatCompletionResult.class);
-        return chatCompletionResult.choices().get(0).message().content();
-    }
-
-    private String chatCompletionRequest() throws IOException {
+    public String chatCompletionRequest(ChatCompletionRequest chatCompletionRequest) throws IOException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         String jsonBody = objectMapper.writeValueAsString(chatCompletionRequest);
         RequestBody requestBody = RequestBody.create(jsonBody, JSON);
@@ -52,9 +38,8 @@ public class Proxyapi {
                 .build();
         String responseBody = null;
         try (Response response = okHttpClient.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
+            if (!response.isSuccessful())
                 throw new IOException("ERROR: " + response.code() + " " + response.message());
-            }
             responseBody = response.body().string();
         } catch (NullPointerException npe) {
             throw new NullPointerException("ERROR: in messageRequest()");
