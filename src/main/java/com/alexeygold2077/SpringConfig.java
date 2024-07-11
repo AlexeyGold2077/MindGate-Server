@@ -18,7 +18,7 @@ public class SpringConfig {
 
     @Bean
     public Proxyapi proxyapi() {
-        return new Proxyapi(PROXY_API_KEY, Proxyapi.OpenAIModels.GPT4O);
+        return new Proxyapi(PROXY_API_KEY);
     }
 
     @Bean

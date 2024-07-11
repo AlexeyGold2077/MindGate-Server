@@ -1,7 +1,8 @@
 import requests
 
+localServerIP = '192.168.97.217:8090'
 def sendMessage(message):
-    url = f'http://192.168.97.217:8090/sendmessageAsUser/gpt4?message={message}'
+    url = f'http://{localServerIP}/sendmessageAsUser/gpt4?message={message}'
     response = requests.get(url)
 
     if response.status_code == 200:

@@ -15,23 +15,20 @@ public class SpringController {
     private Proxyapi ai;
 
     @GetMapping("/sendmessageAsUser/gpt4")
-    public String sendmessageAsUserGpt4(@RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message);
+    public String sendmessageAsUserGpt4(@RequestParam(value = "userId") String userId,
+                                        @RequestParam(value = "message") String message) throws IOException {
+        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4);
     }
 
     @GetMapping("/sendmessageAsUser/gpt-4o")
-    public String sendmessageAsUserGpt4o(@RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message);
+    public String sendmessageAsUserGpt4o(@RequestParam(value = "userId") String userId,
+                                         @RequestParam(value = "message") String message) throws IOException {
+        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4O);
     }
 
     @GetMapping("/sendmessageAsUser/gpt-4-turbo")
-    public String sendmessageAsUserGpt4turbo(@RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message);
+    public String sendmessageAsUserGpt4turbo(@RequestParam(value = "userId") String userId,
+                                             @RequestParam(value = "message") String message) throws IOException {
+        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4TURBO);
     }
-
-//    @ExceptionHandler(RuntimeException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public String handleRuntimeException(RuntimeException re) {
-//        return re.getMessage();
-//    }
 }
