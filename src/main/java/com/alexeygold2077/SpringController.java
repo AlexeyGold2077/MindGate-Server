@@ -13,11 +13,11 @@ public class SpringController {
 
     @Autowired private Proxyapi ai;
 
-    @GetMapping("/sendmessageAsUser/gpt4")
+    /*@GetMapping("/sendmessageAsUser/gpt4")
     public String sendmessageAsUserGpt4(@RequestParam(value = "userId") String userId,
                                         @RequestParam(value = "message") String message) throws IOException {
         return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4);
-    }
+    }*/
 
     @GetMapping("/sendmessageAsUser/gpt-4o")
     public String sendmessageAsUserGpt4o(@RequestParam(value = "userId") String userId,

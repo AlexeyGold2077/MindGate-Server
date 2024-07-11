@@ -19,4 +19,4 @@ def sendMessage(message, localServerIP, userId, model):
         return str("Error: " + str(response.status_code))
 
 
-print(sendMessage(message, localServerIP, userId, gpt4o))
+print(sendMessage(message, localServerIP, userId, gpt4turbo))
