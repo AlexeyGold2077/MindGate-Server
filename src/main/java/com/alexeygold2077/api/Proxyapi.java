@@ -1,17 +1,14 @@
 package com.alexeygold2077.api;
 
-<<<<<<< HEAD
 import com.alexeygold2077.api.DTO.ProxyapiChatCompletionRequest;
 import com.alexeygold2077.api.DTO.ProxyapiChatCompletionResult;
-=======
-import com.alexeygold2077.api.DTO.ChatCompletionRequest;
->>>>>>> refs/remotes/origin/master
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 @Component
 public class Proxyapi {
@@ -19,10 +16,7 @@ public class Proxyapi {
     @Autowired
     private OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
-<<<<<<< HEAD
     private final ProxyapiChatCompletionRequest proxyapiChatCompletionRequest;
-=======
->>>>>>> refs/remotes/origin/master
 
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
     private final String ANTHROPIC_URL = "https://api.proxyapi.ru/anthropic/v1/messages";
@@ -34,7 +28,6 @@ public class Proxyapi {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.MODEL = MODEL;
         this.objectMapper = new ObjectMapper();
-<<<<<<< HEAD
         this.proxyapiChatCompletionRequest = new ProxyapiChatCompletionRequest(new LinkedList<>(), this.MODEL.getName());
     }
 
@@ -49,12 +42,7 @@ public class Proxyapi {
         return proxyapiChatCompletionResult.choices().get(0).message().content();
     }
 
-    private String chatCompletionRequest() throws IOException {
-=======
-    }
-
-    public String chatCompletionRequest(ChatCompletionRequest chatCompletionRequest) throws IOException {
->>>>>>> refs/remotes/origin/master
+    public String chatCompletionRequest() throws IOException {
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         String jsonBody = objectMapper.writeValueAsString(proxyapiChatCompletionRequest);
         RequestBody requestBody = RequestBody.create(jsonBody, JSON);
