@@ -15,13 +15,6 @@
 	<name>proxyapi-java</name>
 	<description>REST API</description>
 
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-
 	<properties>
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
