@@ -1,8 +1,16 @@
 import requests
 
-localServerIP = '192.168.97.217:8090'
-def sendMessage(message):
-    url = f'http://{localServerIP}/sendmessageAsUser/gpt4?message={message}'
+message = 'hi'
+userId = '123'
+localServerIP = 'localhost:8090'
+# gpt4 = 'gpt4'
+gpt4o = 'gpt-4o'
+gpt4turbo = 'gpt-4-turbo'
+
+
+def sendMessage(message, localServerIP, userId, model):
+    url = f'http://{localServerIP}/sendmessageAsUser/{model}?userId={userId}&message={message}'
+    print(url)
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -10,4 +18,5 @@ def sendMessage(message):
     else:
         return str("Error: " + str(response.status_code))
 
-print(sendMessage("Hello!"))
+
+print(sendMessage(message, localServerIP, userId, gpt4o))
