@@ -8,16 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.LinkedList;
 
 @Component
 public class Proxyapi {
 
-    private final String PROXY_API_KEY;
-
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
     private final String ANTHROPIC_URL = "https://api.proxyapi.ru/anthropic/v1/messages";
+
+    private final String PROXY_API_KEY;
 
     @Autowired private OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
@@ -35,7 +34,7 @@ public class Proxyapi {
 
         ChatCompletionResult chatCompletionResult =
                 objectMapper.readValue(chatCompletionRequest(message, role, model), ChatCompletionResult.class);
-        
+
         return chatCompletionResult.choices().get(0).message().content();
     }
 
@@ -56,8 +55,6 @@ public class Proxyapi {
                 .header("Authorization", "Bearer " + PROXY_API_KEY)
                 .post(requestBody)
                 .build();
-
-        System.out.println(jsonBody);
 
         String responseBody = null;
         try (Response response = okHttpClient.newCall(request).execute()) {

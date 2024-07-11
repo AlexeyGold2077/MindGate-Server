@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SpringController {
 
-    @Autowired
-    private Proxyapi ai;
+    @Autowired private Proxyapi ai;
 
     @GetMapping("/sendmessageAsUser/gpt4")
     public String sendmessageAsUserGpt4(@RequestParam(value = "userId") String userId,
