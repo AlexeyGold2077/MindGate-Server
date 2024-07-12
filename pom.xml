@@ -11,9 +11,9 @@
 
 	<groupId>com.alexeygold2077</groupId>
 	<artifactId>proxyapi-java</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>v1.0.1</version>
 	<name>proxyapi-java</name>
-	<description>REST API</description>
+	<!--<description>REST API</description>-->
 
 	<properties>
 		<java.version>17</java.version>

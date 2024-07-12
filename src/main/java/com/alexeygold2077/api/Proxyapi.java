@@ -27,7 +27,10 @@ public class Proxyapi {
     }
 
     public String getChatCompletionAsUser(String message, OpenAIModels model) throws IOException {
-        return getChatCompletion(message, Roles.USER, model);
+        String ret = getChatCompletion(message, Roles.USER, model);
+        System.out.println("user - " + message);
+        System.out.println("bot - " + ret);
+        return ret;
     }
 
     private String getChatCompletion(String message, Roles role, Proxyapi.OpenAIModels model) throws IOException {
