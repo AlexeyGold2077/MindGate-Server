@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.alexeygold2077.api.Proxyapi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,23 +13,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SpringController {
 
-    @Autowired private Proxyapi ai;
+    @Autowired Proxyapi ai;
+    @Autowired Users users;
 
-    @GetMapping("/sendmessageAsUser/gpt4")
-    public String sendmessageAsUserGpt4(@RequestParam(value = "userId") String userId,
-                                        @RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4);
+    @GetMapping("/new/user")
+    public ResponseEntity<?> registerNewUser(@RequestParam(value = "id") String id,
+                                             @RequestParam(value = "model") String model) {
+        return switch (model) {
+            case "gpt-4" -> new ResponseEntity<>(users.addUser(id, Proxyapi.OpenAIModels.GPT4), HttpStatus.OK);
+            case "gpt-4o" -> new ResponseEntity<>(users.addUser(id, Proxyapi.OpenAIModels.GPT4O), HttpStatus.OK);
+            case "gpt-4-turbo" ->
+                    new ResponseEntity<>(users.addUser(id, Proxyapi.OpenAIModels.GPT4TURBO), HttpStatus.OK);
+            default -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        };
     }
 
-    @GetMapping("/sendmessageAsUser/gpt-4o")
-    public String sendmessageAsUserGpt4o(@RequestParam(value = "userId") String userId,
-                                         @RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4O);
-    }
-
-    @GetMapping("/sendmessageAsUser/gpt-4-turbo")
-    public String sendmessageAsUserGpt4turbo(@RequestParam(value = "userId") String userId,
-                                             @RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4TURBO);
+    @GetMapping("/new/message/user")
+    public String sendmessageAsUser(@RequestParam(value = "id") String id,
+                                    @RequestParam(value = "message") String message) throws IOException {
+        return ai.getChatCompletionAsUser(message, users.getUser(id).getMessages(), users.getUser(id).model);
     }
 }

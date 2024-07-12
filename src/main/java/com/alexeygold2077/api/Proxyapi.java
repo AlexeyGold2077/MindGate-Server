@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 @Component
 public class Proxyapi {
@@ -26,27 +27,32 @@ public class Proxyapi {
         this.objectMapper = new ObjectMapper();
     }
 
-    public String getChatCompletionAsUser(String message, OpenAIModels model) throws IOException {
-        String ret = getChatCompletion(message, Roles.USER, model);
-        System.out.println("user - " + message);
-        System.out.println("bot - " + ret);
-        return ret;
+    public String getChatCompletionAsUser(String message,
+                                          List<ChatCompletionRequest.Message> messages,
+                                          OpenAIModels model) throws IOException {
+        return getChatCompletion(message, messages, Roles.USER, model);
     }
 
-    private String getChatCompletion(String message, Roles role, Proxyapi.OpenAIModels model) throws IOException {
+    private String getChatCompletion(String message,
+                                     List<ChatCompletionRequest.Message> messages,
+                                     Roles role,
+                                     Proxyapi.OpenAIModels model) throws IOException {
 
         ChatCompletionResult chatCompletionResult =
-                objectMapper.readValue(chatCompletionRequest(message, role, model), ChatCompletionResult.class);
+                objectMapper.readValue(chatCompletionRequest(message, messages, role, model), ChatCompletionResult.class);
 
         return chatCompletionResult.choices().get(0).message().content();
     }
 
-    public String chatCompletionRequest(String message, Roles role, Proxyapi.OpenAIModels model) throws IOException {
+    public String chatCompletionRequest(String message,
+                                        List<ChatCompletionRequest.Message> messages,
+                                        Roles role,
+                                        Proxyapi.OpenAIModels model) throws IOException {
 
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
         ChatCompletionRequest chatCompletionRequest =
-                new ChatCompletionRequest(new LinkedList<>(), model.getName());
+                new ChatCompletionRequest(messages, model.getName());
         chatCompletionRequest.addMessage(message, role.getName(), "user");
 
         String jsonBody = objectMapper.writeValueAsString(chatCompletionRequest);
@@ -80,6 +86,7 @@ public class Proxyapi {
     }
 
     public enum OpenAIModels {
+        DEFAULT("gpt-4"),
         GPT4("gpt-4"),
         GPT4O("gpt-4o"),
         GPT4TURBO("gpt-4-turbo");
