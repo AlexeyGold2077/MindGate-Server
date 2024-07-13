@@ -20,5 +20,5 @@
 - Создание пользователя
 `http://localhost:22870/new/user?id=1&model=GPT4O`
 
-- Создание пользователя
+- Создание запроса
 `http://localhost:22870/new/message/user?id=1&message=What is Stanley Kubrick's name?`
