@@ -13,16 +13,16 @@ import java.util.Map;
 @Component
 public class Users {
 
-    private final Map<String, User> usersArray = new HashMap<>();
+    private final Map<Long, User> usersArray = new HashMap<>();
     private User lastUser;
 
-    public User addUser(String id, Proxyapi.OpenAIModels model) {
+    public User addUser(Long id, Proxyapi.OpenAIModels model) {
         lastUser = new User(id, model);
         usersArray.put(id, lastUser);
         return lastUser;
     }
 
-    public User getUser(String id) {
+    public User getUser(Long id) {
         return usersArray.get(id);
     }
 
@@ -32,7 +32,7 @@ public class Users {
 
     public static class User {
 
-        public String id;
+        public Long id;
         public Proxyapi.OpenAIModels model;
         public List<ChatCompletionRequest.Message> messages;
 
@@ -40,11 +40,10 @@ public class Users {
             return messages;
         }
 
-        User(String id, Proxyapi.OpenAIModels model) {
+        User(Long id, Proxyapi.OpenAIModels model) {
             this.id = id;
             this.model = model;
-            this.messages =
-                    new LinkedList<ChatCompletionRequest.Message>();
+            this.messages = new LinkedList<ChatCompletionRequest.Message>();
         }
     }
 }

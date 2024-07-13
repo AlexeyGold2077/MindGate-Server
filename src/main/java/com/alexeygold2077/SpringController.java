@@ -17,19 +17,13 @@ public class SpringController {
     @Autowired Users users;
 
     @GetMapping("/new/user")
-    public ResponseEntity<?> registerNewUser(@RequestParam(value = "id") String id,
-                                             @RequestParam(value = "model") String model) {
-        return switch (model) {
-            case "gpt-4" -> new ResponseEntity<>(users.addUser(id, Proxyapi.OpenAIModels.GPT4), HttpStatus.OK);
-            case "gpt-4o" -> new ResponseEntity<>(users.addUser(id, Proxyapi.OpenAIModels.GPT4O), HttpStatus.OK);
-            case "gpt-4-turbo" ->
-                    new ResponseEntity<>(users.addUser(id, Proxyapi.OpenAIModels.GPT4TURBO), HttpStatus.OK);
-            default -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        };
+    public ResponseEntity<?> registerNewUser(@RequestParam(value = "id") Long id,
+                                             @RequestParam(value = "model") Proxyapi.OpenAIModels model) {
+        return new ResponseEntity<>(users.addUser(id, model), HttpStatus.OK);
     }
 
     @GetMapping("/new/message/user")
-    public ResponseEntity<?> sendmessageAsUser(@RequestParam(value = "id") String id,
+    public ResponseEntity<?> sendmessageAsUser(@RequestParam(value = "id") Long id,
                                                @RequestParam(value = "message") String message) throws IOException {
         try {
             return new ResponseEntity<>(
