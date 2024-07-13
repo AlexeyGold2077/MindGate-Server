@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.alexeygold2077.api.Proxyapi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,23 +13,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SpringController {
 
-    @Autowired private Proxyapi ai;
+    @Autowired Proxyapi ai;
+    @Autowired Users users;
 
-    @GetMapping("/sendmessageAsUser/gpt4")
-    public String sendmessageAsUserGpt4(@RequestParam(value = "userId") String userId,
-                                        @RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4);
+    @GetMapping("/new/user")
+    public ResponseEntity<?> registerNewUser(@RequestParam(value = "id") Long id,
+                                             @RequestParam(value = "model") Proxyapi.OpenAIModels model) {
+        return new ResponseEntity<>(users.addUser(id, model), HttpStatus.OK);
     }
 
-    @GetMapping("/sendmessageAsUser/gpt-4o")
-    public String sendmessageAsUserGpt4o(@RequestParam(value = "userId") String userId,
-                                         @RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4O);
-    }
-
-    @GetMapping("/sendmessageAsUser/gpt-4-turbo")
-    public String sendmessageAsUserGpt4turbo(@RequestParam(value = "userId") String userId,
-                                             @RequestParam(value = "message") String message) throws IOException {
-        return ai.getChatCompletionAsUser(message, Proxyapi.OpenAIModels.GPT4TURBO);
+    @GetMapping("/new/message/user")
+    public ResponseEntity<?> sendmessageAsUser(@RequestParam(value = "id") Long id,
+                                               @RequestParam(value = "message") String message) throws IOException {
+        try {
+            return new ResponseEntity<>(
+                    ai.getChatCompletionAsUser(
+                            message,
+                            users.getUser(id).getMessages(),
+                            users.getUser(id).model
+                    ),
+                    HttpStatus.OK
+            );
+        } catch (NullPointerException npe) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
