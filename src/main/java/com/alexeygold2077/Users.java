@@ -1,7 +1,6 @@
 package com.alexeygold2077;
 
 import com.alexeygold2077.api.DTO.ChatCompletionRequest;
-import com.alexeygold2077.api.DTO.ChatCompletionResult;
 import com.alexeygold2077.api.Proxyapi;
 import org.springframework.stereotype.Component;
 
@@ -14,20 +13,15 @@ import java.util.Map;
 public class Users {
 
     private final Map<Long, User> usersArray = new HashMap<>();
-    private User lastUser;
 
     public User addUser(Long id, Proxyapi.OpenAIModels model) {
-        lastUser = new User(id, model);
-        usersArray.put(id, lastUser);
-        return lastUser;
+        User newUser = new User(id, model);
+        usersArray.put(id, newUser);
+        return newUser;
     }
 
     public User getUser(Long id) {
         return usersArray.get(id);
-    }
-
-    public User getLastUser() {
-        return lastUser;
     }
 
     public static class User {
@@ -43,7 +37,7 @@ public class Users {
         User(Long id, Proxyapi.OpenAIModels model) {
             this.id = id;
             this.model = model;
-            this.messages = new LinkedList<ChatCompletionRequest.Message>();
+            this.messages = new LinkedList<>();
         }
     }
 }
