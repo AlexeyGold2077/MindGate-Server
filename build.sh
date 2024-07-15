@@ -6,6 +6,7 @@ read RELEASE
 # maven
 mvn clean
 mvn install
+mvn package
 # docker
 docker build -t proxyapi-java:latest -t proxyapi-java:"$RELEASE" .
 docker tag proxyapi-java:"$RELEASE" alexeyzolotarev2077/proxyapi-java:"$RELEASE"

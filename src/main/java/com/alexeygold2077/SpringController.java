@@ -38,4 +38,13 @@ public class SpringController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/get/user/messages")
+    public ResponseEntity<?> getUserMessages(@RequestParam(value = "id") Long id) {
+        try {
+            return new ResponseEntity<>(users.getUser(id).messages, HttpStatus.OK);
+        } catch (NullPointerException npe) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
