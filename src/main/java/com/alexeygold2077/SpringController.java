@@ -13,18 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SpringController {
 
-    @Autowired Proxyapi ai;
-    @Autowired Users users;
+    @Autowired
+    Proxyapi ai;
+    @Autowired
+    Users users;
 
     @GetMapping("/new/user")
     public ResponseEntity<?> newUser(@RequestParam(value = "userId") Long userId,
-                                             @RequestParam(value = "model") Proxyapi.OpenAIModels model) {
+                                     @RequestParam(value = "model") Proxyapi.OpenAIModels model) {
         return new ResponseEntity<>(users.addUser(userId, model), HttpStatus.OK);
     }
 
     @GetMapping("/new/message/user")
     public ResponseEntity<?> newMessageAsUser(@RequestParam(value = "userId") Long userId,
-                                               @RequestParam(value = "message") String message) throws IOException {
+                                              @RequestParam(value = "message") String message) throws IOException {
         try {
             return new ResponseEntity<>(
                     ai.getChatCompletionMessageAsUser(
@@ -41,7 +43,7 @@ public class SpringController {
 
     @GetMapping("/new/message/system")
     public ResponseEntity<?> newMessageAsSystem(@RequestParam(value = "userId") Long userId,
-                                                 @RequestParam(value = "message") String message) throws IOException {
+                                                @RequestParam(value = "message") String message) throws IOException {
         try {
             return new ResponseEntity<>(
                     ai.getChatCompletionMessageAsSystem(

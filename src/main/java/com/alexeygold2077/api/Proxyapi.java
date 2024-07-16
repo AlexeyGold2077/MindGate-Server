@@ -18,7 +18,8 @@ public class Proxyapi {
 
     private final String PROXY_API_KEY;
 
-    @Autowired private OkHttpClient okHttpClient;
+    @Autowired
+    private OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
 
     public Proxyapi(String PROXY_API_KEY) {
@@ -26,28 +27,28 @@ public class Proxyapi {
         this.objectMapper = new ObjectMapper();
     }
 
-    public String getChatCompletionMessageAsUser(String message,
+    public String getChatCompletionMessageAsUser(String content,
                                                  List<ChatCompletionRequest.Message> messages,
                                                  OpenAIModels model) throws IOException {
-        return getChatCompletionMessage(message, messages, Roles.USER, model);
+        return getChatCompletionMessage(content, messages, Roles.USER, model);
     }
 
-    public String getChatCompletionMessageAsSystem(String message,
+    public String getChatCompletionMessageAsSystem(String content,
                                                    List<ChatCompletionRequest.Message> messages,
                                                    OpenAIModels model) throws IOException {
-        return getChatCompletionMessage(message, messages, Roles.SYSTEM, model);
+        return getChatCompletionMessage(content, messages, Roles.SYSTEM, model);
     }
 
-    private String getChatCompletionMessage(String message,
+    private String getChatCompletionMessage(String content,
                                             List<ChatCompletionRequest.Message> messages,
                                             Roles role,
                                             Proxyapi.OpenAIModels model) throws IOException {
 
-        ChatCompletionResult chatCompletionResult = getChatCompletion(message, messages, role, model);
+        ChatCompletionResult chatCompletionResult = getChatCompletion(content, messages, role, model);
         return chatCompletionResult.choices().get(0).message().content();
     }
 
-    public ChatCompletionResult getChatCompletion(String message,
+    public ChatCompletionResult getChatCompletion(String content,
                                                   List<ChatCompletionRequest.Message> messages,
                                                   Roles role,
                                                   Proxyapi.OpenAIModels model) throws IOException {
@@ -56,7 +57,7 @@ public class Proxyapi {
 
         ChatCompletionRequest chatCompletionRequest =
                 new ChatCompletionRequest(messages, model.getName());
-        chatCompletionRequest.addMessage(message, role.getName(), "user");
+        chatCompletionRequest.addMessage(content, role.getName(), "name1");
 
         String jsonBody = objectMapper.writeValueAsString(chatCompletionRequest);
 
@@ -80,21 +81,33 @@ public class Proxyapi {
         return objectMapper.readValue(responseBody, ChatCompletionResult.class);
     }
 
-    public enum Roles {
+    private enum Roles {
         USER("user"),
         SYSTEM("system");
         private final String name;
-        Roles(String code) { this.name = code; }
-        public String getName() { return name; }
+
+        Roles(String code) {
+            this.name = code;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
-    public enum OpenAIModels {
+    private enum OpenAIModels {
         DEFAULT("gpt-4"),
         GPT4("gpt-4"),
         GPT4O("gpt-4o"),
         GPT4TURBO("gpt-4-turbo");
         private final String name;
-        OpenAIModels(String code) { this.name = code; }
-        public String getName() { return name; }
+
+        OpenAIModels(String code) {
+            this.name = code;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }
