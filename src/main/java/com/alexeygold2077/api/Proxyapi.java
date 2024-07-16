@@ -26,17 +26,15 @@ public class Proxyapi {
         this.objectMapper = new ObjectMapper();
     }
 
-    public String getChatCompletionAsUser(String message,
-                                          List<ChatCompletionRequest.Message> messages,
-                                          OpenAIModels model) throws IOException {
-
+    public String getChatCompletionMessageAsUser(String message,
+                                                 List<ChatCompletionRequest.Message> messages,
+                                                 OpenAIModels model) throws IOException {
         return getChatCompletionMessage(message, messages, Roles.USER, model);
     }
 
-    public String getChatCompletionAsSystem(String message,
-                                            List<ChatCompletionRequest.Message> messages,
-                                            OpenAIModels model) throws IOException {
-
+    public String getChatCompletionMessageAsSystem(String message,
+                                                   List<ChatCompletionRequest.Message> messages,
+                                                   OpenAIModels model) throws IOException {
         return getChatCompletionMessage(message, messages, Roles.SYSTEM, model);
     }
 

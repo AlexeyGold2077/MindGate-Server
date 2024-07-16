@@ -17,20 +17,20 @@ public class SpringController {
     @Autowired Users users;
 
     @GetMapping("/new/user")
-    public ResponseEntity<?> registerNewUser(@RequestParam(value = "id") Long id,
+    public ResponseEntity<?> newUser(@RequestParam(value = "userId") Long userId,
                                              @RequestParam(value = "model") Proxyapi.OpenAIModels model) {
-        return new ResponseEntity<>(users.addUser(id, model), HttpStatus.OK);
+        return new ResponseEntity<>(users.addUser(userId, model), HttpStatus.OK);
     }
 
     @GetMapping("/new/message/user")
-    public ResponseEntity<?> sendmessageAsUser(@RequestParam(value = "id") Long id,
+    public ResponseEntity<?> newMessageAsUser(@RequestParam(value = "userId") Long userId,
                                                @RequestParam(value = "message") String message) throws IOException {
         try {
             return new ResponseEntity<>(
-                    ai.getChatCompletionAsUser(
+                    ai.getChatCompletionMessageAsUser(
                             message,
-                            users.getUser(id).getMessages(),
-                            users.getUser(id).model
+                            users.getUser(userId).getMessages(),
+                            users.getUser(userId).model
                     ),
                     HttpStatus.OK
             );
@@ -40,14 +40,14 @@ public class SpringController {
     }
 
     @GetMapping("/new/message/system")
-    public ResponseEntity<?> sendmessageAsSystem(@RequestParam(value = "id") Long id,
+    public ResponseEntity<?> newMessageAsSystem(@RequestParam(value = "userId") Long userId,
                                                  @RequestParam(value = "message") String message) throws IOException {
         try {
             return new ResponseEntity<>(
-                    ai.getChatCompletionAsSystem(
+                    ai.getChatCompletionMessageAsSystem(
                             message,
-                            users.getUser(id).getMessages(),
-                            users.getUser(id).model
+                            users.getUser(userId).getMessages(),
+                            users.getUser(userId).model
                     ),
                     HttpStatus.OK
             );
@@ -57,9 +57,9 @@ public class SpringController {
     }
 
     @GetMapping("/get/user/messages")
-    public ResponseEntity<?> getUserMessages(@RequestParam(value = "id") Long id) {
+    public ResponseEntity<?> getUserMessages(@RequestParam(value = "userId") Long userId) {
         try {
-            return new ResponseEntity<>(users.getUser(id).messages, HttpStatus.OK);
+            return new ResponseEntity<>(users.getUser(userId).messages, HttpStatus.OK);
         } catch (NullPointerException npe) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
