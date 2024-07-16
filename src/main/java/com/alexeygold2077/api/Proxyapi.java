@@ -29,24 +29,30 @@ public class Proxyapi {
     public String getChatCompletionAsUser(String message,
                                           List<ChatCompletionRequest.Message> messages,
                                           OpenAIModels model) throws IOException {
-        return getChatCompletion(message, messages, Roles.USER, model);
+
+        return getChatCompletionMessage(message, messages, Roles.USER, model);
     }
 
-    private String getChatCompletion(String message,
-                                     List<ChatCompletionRequest.Message> messages,
-                                     Roles role,
-                                     Proxyapi.OpenAIModels model) throws IOException {
+    public String getChatCompletionAsSystem(String message,
+                                            List<ChatCompletionRequest.Message> messages,
+                                            OpenAIModels model) throws IOException {
 
-        ChatCompletionResult chatCompletionResult =
-                objectMapper.readValue(chatCompletionRequest(message, messages, role, model), ChatCompletionResult.class);
+        return getChatCompletionMessage(message, messages, Roles.SYSTEM, model);
+    }
 
+    private String getChatCompletionMessage(String message,
+                                            List<ChatCompletionRequest.Message> messages,
+                                            Roles role,
+                                            Proxyapi.OpenAIModels model) throws IOException {
+
+        ChatCompletionResult chatCompletionResult = getChatCompletion(message, messages, role, model);
         return chatCompletionResult.choices().get(0).message().content();
     }
 
-    public String chatCompletionRequest(String message,
-                                        List<ChatCompletionRequest.Message> messages,
-                                        Roles role,
-                                        Proxyapi.OpenAIModels model) throws IOException {
+    public ChatCompletionResult getChatCompletion(String message,
+                                                  List<ChatCompletionRequest.Message> messages,
+                                                  Roles role,
+                                                  Proxyapi.OpenAIModels model) throws IOException {
 
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
@@ -73,7 +79,7 @@ public class Proxyapi {
             throw new NullPointerException("ERROR: in messageRequest()");
         }
 
-        return responseBody;
+        return objectMapper.readValue(responseBody, ChatCompletionResult.class);
     }
 
     public enum Roles {

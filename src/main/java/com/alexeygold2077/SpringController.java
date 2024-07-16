@@ -38,4 +38,30 @@ public class SpringController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/new/message/system")
+    public ResponseEntity<?> sendmessageAsSystem(@RequestParam(value = "id") Long id,
+                                                 @RequestParam(value = "message") String message) throws IOException {
+        try {
+            return new ResponseEntity<>(
+                    ai.getChatCompletionAsSystem(
+                            message,
+                            users.getUser(id).getMessages(),
+                            users.getUser(id).model
+                    ),
+                    HttpStatus.OK
+            );
+        } catch (NullPointerException npe) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/get/user/messages")
+    public ResponseEntity<?> getUserMessages(@RequestParam(value = "id") Long id) {
+        try {
+            return new ResponseEntity<>(users.getUser(id).messages, HttpStatus.OK);
+        } catch (NullPointerException npe) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
