@@ -1,6 +1,10 @@
 # MindGate
 
-### MindGate is a backend application that provides access to various artificial intelligence models using REST API. Written using Java Maven and Spring Boot.
+## MindGate is a backend application built using Java, Maven, and Spring Boot, providing a REST API for accessing artificial intelligence models using ProxyAPI as its artificial intelligence service.
+
+### Настройки перед использованием
+
+#### Создайте файл `src/resources/application-private.properties`со строкой `PROXY_API_KEY=ЗАМЕНИТЕ НА ВАШ ТОКЕН`
 
 ### Описание конечных точек
 
@@ -12,7 +16,7 @@
   - `GPT4`
   - `GPT4O`
   - `GPT4TURBO`
-
+  - 
 #### `/new/message/user` - отправка сообщения в роли юзера
 ##### Обязательные параметры
 - `userId` - уникальный числовой идендификатор
