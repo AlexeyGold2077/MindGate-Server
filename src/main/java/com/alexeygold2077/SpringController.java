@@ -39,8 +39,6 @@ public class SpringController {
         }
     }
 
-<<<<<<< HEAD
-=======
     @GetMapping("/new/message/system")
     public ResponseEntity<?> sendmessageAsSystem(@RequestParam(value = "id") Long id,
                                                  @RequestParam(value = "message") String message) throws IOException {
@@ -58,7 +56,6 @@ public class SpringController {
         }
     }
 
->>>>>>> develop
     @GetMapping("/get/user/messages")
     public ResponseEntity<?> getUserMessages(@RequestParam(value = "id") Long id) {
         try {
