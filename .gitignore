@@ -52,4 +52,4 @@ mvnw
 
 config.json
 
-application-dev.properties
+application-private.properties

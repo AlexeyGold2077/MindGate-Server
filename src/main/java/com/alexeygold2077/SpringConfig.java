@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@PropertySource("application-dev.properties")
+@PropertySource("application-private.properties")
 public class SpringConfig {
 
     @Value("${PROXY_API_KEY}")

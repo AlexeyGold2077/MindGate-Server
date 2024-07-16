@@ -95,7 +95,7 @@ public class Proxyapi {
         }
     }
 
-    private enum OpenAIModels {
+    public enum OpenAIModels {
         DEFAULT("gpt-4"),
         GPT4("gpt-4"),
         GPT4O("gpt-4o"),
