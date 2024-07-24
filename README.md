@@ -1,6 +1,6 @@
 # MindGate
 
-## MindGate is a backend application built using Java, Maven, and Spring, providing a REST API for accessing artificial intelligence models using ProxyAPI as its artificial intelligence service.
+## MindGate is a backend application built using Java, Maven, and Spring, providing a REST API for accessing artificial intelligence models using ProxyAPI as its service.
 
 ### Настройки перед использованием
 
