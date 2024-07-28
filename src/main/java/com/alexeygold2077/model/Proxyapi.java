@@ -7,8 +7,10 @@ import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.management.relation.Role;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class Proxyapi {
@@ -24,6 +26,17 @@ public class Proxyapi {
     public Proxyapi(String PROXY_API_KEY) {
         this.PROXY_API_KEY = PROXY_API_KEY;
         this.objectMapper = new ObjectMapper();
+    }
+
+    public String getChatCompletionMessageAs(String content,
+                                             List<ChatCompletionRequest.Message> messages,
+                                             OpenAIModels model,
+                                             Roles role) throws IOException {
+        if (Objects.equals(role.getName(), "user"))
+            return getChatCompletionMessage(content, messages, Roles.USER, model);
+        if (Objects.equals(role.getName(), "system"))
+            return getChatCompletionMessage(content, messages, Roles.SYSTEM, model);
+        throw new IOException();
     }
 
     public String getChatCompletionMessageAsUser(String content,
@@ -80,7 +93,7 @@ public class Proxyapi {
         return objectMapper.readValue(responseBody, ChatCompletionResult.class);
     }
 
-    private enum Roles {
+    public enum Roles {
         USER("user"),
         SYSTEM("system");
         private final String name;
