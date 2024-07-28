@@ -1,7 +1,7 @@
-package com.alexeygold2077.proxyapi;
+package com.alexeygold2077.model;
 
-import com.alexeygold2077.proxyapi.DTO.ChatCompletionRequest;
-import com.alexeygold2077.proxyapi.DTO.ChatCompletionResult;
+import com.alexeygold2077.model.DTO.proxyapi.ChatCompletionRequest;
+import com.alexeygold2077.model.DTO.proxyapi.ChatCompletionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;

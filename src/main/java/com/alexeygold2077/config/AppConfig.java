@@ -1,6 +1,6 @@
 package com.alexeygold2077.config;
 
-import com.alexeygold2077.proxyapi.Proxyapi;
+import com.alexeygold2077.model.Proxyapi;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

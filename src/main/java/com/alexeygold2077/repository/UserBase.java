@@ -1,7 +1,7 @@
-package com.alexeygold2077;
+package com.alexeygold2077.repository;
 
-import com.alexeygold2077.proxyapi.DTO.ChatCompletionRequest;
-import com.alexeygold2077.proxyapi.Proxyapi;
+import com.alexeygold2077.model.DTO.proxyapi.ChatCompletionRequest;
+import com.alexeygold2077.model.Proxyapi;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class Users {
+public class UserBase {
 
     private final Map<Long, User> usersArray = new HashMap<>();
 

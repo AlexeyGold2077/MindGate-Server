@@ -1,25 +1,29 @@
-package com.alexeygold2077;
+package com.alexeygold2077.controller;
 
-import java.io.IOException;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.alexeygold2077.proxyapi.Proxyapi;
+import com.alexeygold2077.model.Proxyapi;
+import com.alexeygold2077.repository.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @RestController
 public class MainController {
 
     @Autowired Proxyapi ai;
-    @Autowired Users users;
+    @Autowired
+    UserBase userBase;
 
     @GetMapping("/new/user")
     public ResponseEntity<?> newUser(@RequestParam Long userId,
-                                     @RequestParam(required = false, defaultValue = "DEFAULT") Proxyapi.OpenAIModels model) {
-        return new ResponseEntity<>(users.addUser(userId, model), HttpStatus.OK);
+                                     @RequestParam(
+                                             required = false,
+                                             defaultValue = "DEFAULT") Proxyapi.OpenAIModels model) {
+        return new ResponseEntity<>(userBase.addUser(userId, model), HttpStatus.OK);
     }
 
     @GetMapping("/new/message/user")
@@ -29,8 +33,8 @@ public class MainController {
             return new ResponseEntity<>(
                     ai.getChatCompletionMessageAsUser(
                             message,
-                            users.getUser(userId).getMessages(),
-                            users.getUser(userId).model
+                            userBase.getUser(userId).getMessages(),
+                            userBase.getUser(userId).model
                     ),
                     HttpStatus.OK
             );
@@ -46,8 +50,8 @@ public class MainController {
             return new ResponseEntity<>(
                     ai.getChatCompletionMessageAsSystem(
                             message,
-                            users.getUser(userId).getMessages(),
-                            users.getUser(userId).model
+                            userBase.getUser(userId).getMessages(),
+                            userBase.getUser(userId).model
                     ),
                     HttpStatus.OK
             );
@@ -59,7 +63,7 @@ public class MainController {
     @GetMapping("/get/user/messages")
     public ResponseEntity<?> getUserMessages(@RequestParam(value = "userId") Long userId) {
         try {
-            return new ResponseEntity<>(users.getUser(userId).messages, HttpStatus.OK);
+            return new ResponseEntity<>(userBase.getUser(userId).messages, HttpStatus.OK);
         } catch (NullPointerException npe) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
