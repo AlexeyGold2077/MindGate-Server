@@ -40,8 +40,6 @@ pom.xml.versionsBackup
 .idea/
 .settings/
 
-# Spring
-src/main/resources/application.properties
 
 # Other
 *.log
