@@ -1,14 +1,14 @@
-package com.alexeygold2077.model.DTO.proxyapi;
+package com.alexeygold2077.MindGate.model.dto.proxyapi;
 
 import java.util.List;
 
-public record ChatCompletionResult(String id,
-                                   List<Choice> choices,
-                                   String created,
-                                   String model,
-                                   String system_fingerprint,
-                                   String object,
-                                   Usage usage) {
+public record ChatCompletionResultDTO(String id,
+                                      List<Choice> choices,
+                                      String created,
+                                      String model,
+                                      String system_fingerprint,
+                                      String object,
+                                      Usage usage) {
 
     public record Choice(String finish_reason,
                          String index,

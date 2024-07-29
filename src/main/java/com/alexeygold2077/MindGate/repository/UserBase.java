@@ -1,7 +1,6 @@
-package com.alexeygold2077.repository;
+package com.alexeygold2077.MindGate.repository;
 
-import com.alexeygold2077.model.DTO.proxyapi.ChatCompletionRequest;
-import com.alexeygold2077.model.Proxyapi;
+import com.alexeygold2077.MindGate.model.dto.proxyapi.ChatCompletionRequestDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -24,13 +23,17 @@ public class UserBase {
         return usersArray.get(id);
     }
 
+    public Boolean checkUser(Long id) {
+        return usersArray.containsKey(id);
+    }
+
     public static class User {
 
         public Long id;
         public Proxyapi.OpenAIModels model;
-        public List<ChatCompletionRequest.Message> messages;
+        public List<ChatCompletionRequestDTO.Message> messages;
 
-        public List<ChatCompletionRequest.Message> getMessages() {
+        public List<ChatCompletionRequestDTO.Message> getMessages() {
             return messages;
         }
 

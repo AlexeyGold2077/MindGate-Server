@@ -1,13 +1,12 @@
-package com.alexeygold2077.model;
+package com.alexeygold2077.MindGate.repository;
 
-import com.alexeygold2077.model.DTO.proxyapi.ChatCompletionRequest;
-import com.alexeygold2077.model.DTO.proxyapi.ChatCompletionResult;
+import com.alexeygold2077.MindGate.model.dto.proxyapi.ChatCompletionRequestDTO;
+import com.alexeygold2077.MindGate.model.dto.proxyapi.ChatCompletionResultDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.management.relation.Role;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +28,7 @@ public class Proxyapi {
     }
 
     public String getChatCompletionMessageAs(String content,
-                                             List<ChatCompletionRequest.Message> messages,
+                                             List<ChatCompletionRequestDTO.Message> messages,
                                              OpenAIModels model,
                                              Roles role) throws IOException {
         if (Objects.equals(role.getName(), "user"))
@@ -40,38 +39,38 @@ public class Proxyapi {
     }
 
     public String getChatCompletionMessageAsUser(String content,
-                                                 List<ChatCompletionRequest.Message> messages,
+                                                 List<ChatCompletionRequestDTO.Message> messages,
                                                  OpenAIModels model) throws IOException {
         return getChatCompletionMessage(content, messages, Roles.USER, model);
     }
 
     public String getChatCompletionMessageAsSystem(String content,
-                                                   List<ChatCompletionRequest.Message> messages,
+                                                   List<ChatCompletionRequestDTO.Message> messages,
                                                    OpenAIModels model) throws IOException {
         return getChatCompletionMessage(content, messages, Roles.SYSTEM, model);
     }
 
     private String getChatCompletionMessage(String content,
-                                            List<ChatCompletionRequest.Message> messages,
+                                            List<ChatCompletionRequestDTO.Message> messages,
                                             Roles role,
                                             OpenAIModels model) throws IOException {
 
-        ChatCompletionResult chatCompletionResult = getChatCompletion(content, messages, role, model);
-        return chatCompletionResult.choices().get(0).message().content();
+        ChatCompletionResultDTO chatCompletionResultDTO = getChatCompletion(content, messages, role, model);
+        return chatCompletionResultDTO.choices().get(0).message().content();
     }
 
-    public ChatCompletionResult getChatCompletion(String content,
-                                                  List<ChatCompletionRequest.Message> messages,
-                                                  Roles role,
-                                                  OpenAIModels model) throws IOException {
+    public ChatCompletionResultDTO getChatCompletion(String content,
+                                                     List<ChatCompletionRequestDTO.Message> messages,
+                                                     Roles role,
+                                                     OpenAIModels model) throws IOException {
 
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-        ChatCompletionRequest chatCompletionRequest =
-                new ChatCompletionRequest(messages, model.getName());
-        chatCompletionRequest.addMessage(content, role.getName(), "name1");
+        ChatCompletionRequestDTO chatCompletionRequestDTO =
+                new ChatCompletionRequestDTO(messages, model.getName());
+        chatCompletionRequestDTO.addMessage(content, role.getName(), "name1");
 
-        String jsonBody = objectMapper.writeValueAsString(chatCompletionRequest);
+        String jsonBody = objectMapper.writeValueAsString(chatCompletionRequestDTO);
 
         RequestBody requestBody = RequestBody.create(jsonBody, JSON);
 
@@ -90,7 +89,7 @@ public class Proxyapi {
             throw new NullPointerException("ERROR: in messageRequest()");
         }
 
-        return objectMapper.readValue(responseBody, ChatCompletionResult.class);
+        return objectMapper.readValue(responseBody, ChatCompletionResultDTO.class);
     }
 
     public enum Roles {
