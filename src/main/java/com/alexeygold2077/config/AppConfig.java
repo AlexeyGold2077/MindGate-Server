@@ -11,7 +11,8 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@PropertySource("application-private.properties")
+@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-private.properties")
 public class AppConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Value("${PROXY_API_KEY}")
