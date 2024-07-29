@@ -2,17 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.2</version>
+		<!--useless?-->
 		<relativePath/> <!-- lookup parent from repository -->
+		<!--/useless?-->
 	</parent>
+
 	<groupId>com.alexeygold2077</groupId>
 	<artifactId>MindGate</artifactId>
 	<version>v4.0.0</version>
 	<name>MindGate</name>
 	<description>REST application</description>
+
+	<!--useless?-->
 	<url/>
 	<licenses>
 		<license/>
@@ -26,6 +32,8 @@
 		<tag/>
 		<url/>
 	</scm>
+	<!--/useless?-->
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -57,5 +65,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
