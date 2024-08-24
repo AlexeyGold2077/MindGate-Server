@@ -19,4 +19,5 @@ public class MindGateConfig {
     public Proxyapi proxyapi() {
         return new Proxyapi(PROXY_API_KEY);
     }
+
 }

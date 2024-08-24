@@ -1,11 +1,10 @@
 package com.alexeygold2077.MindGate;
 
-import com.alexeygold2077.MindGate.dto.proxyapi.ChatCompletionRequest;
-import com.alexeygold2077.MindGate.dto.proxyapi.ChatCompletionResponse;
-import com.alexeygold2077.MindGate.dto.proxyapi.Message;
+import com.alexeygold2077.MindGate.dto.ChatCompletionRequest;
+import com.alexeygold2077.MindGate.dto.ChatCompletionResponse;
+import com.alexeygold2077.MindGate.dto.Message;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

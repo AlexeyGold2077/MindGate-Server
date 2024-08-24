@@ -1,4 +1,4 @@
-package com.alexeygold2077.MindGate.dto.proxyapi;
+package com.alexeygold2077.MindGate.dto;
 
 public record Message(
         String role,
