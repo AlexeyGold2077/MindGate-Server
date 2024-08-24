@@ -1,10 +1,10 @@
-//package com.alexeygold2077;
+//package com.alexeygold2077.MindGate;
 //
 //import org.junit.jupiter.api.Test;
 //import org.springframework.boot.test.context.SpringBootTest;
 //
 //@SpringBootTest
-//class ProxyapiApplicationTests {
+//class MindGateApplicationTests {
 //
 //	@Test
 //	void contextLoads() {
