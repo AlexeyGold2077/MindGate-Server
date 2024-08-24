@@ -12,11 +12,11 @@ import java.util.concurrent.TimeUnit;
 @PropertySource("application-private.properties")
 public class MindGateConfig {
 
-    @Value("${PROXYAPI_KEY}")
-    private String PROXYAPI_KEY;
-//
-//    @Bean
-//    public Proxyapi proxyapi() {
-//        return new Proxyapi(PROXYAPI_KEY);
-//    }
+    @Value("${PROXY_API_KEY}")
+    private String PROXY_API_KEY;
+
+    @Bean
+    public Proxyapi proxyapi() {
+        return new Proxyapi(PROXY_API_KEY);
+    }
 }
