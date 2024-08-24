@@ -13,7 +13,13 @@ public class MainController {
     Proxyapi proxyapi;
 
     @PostMapping("/sendMessage")
-    public String sendMessage(@RequestParam String id, @RequestParam String message) throws IOException {
-        return proxyapi.sendMessageAsUser(id, message);
+    public String sendMessage(@RequestParam String id, @RequestParam String message, @RequestParam String role) throws IOException {
+        return proxyapi.sendMessageAsUser(id, message, role);
+    }
+
+    @PatchMapping("/clearDialogue")
+    public String clearDialogue(@RequestParam String id) {
+        proxyapi.clearDialogue(id);
+        return "200";
     }
 }

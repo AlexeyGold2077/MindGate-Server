@@ -23,6 +23,7 @@ public class Proxyapi {
     private final String PROXY_API_KEY;
 
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
+    private final String GPT4TURBO = "gpt-4-turbo";
 
     private final Map<String, LinkedList<Message>> users;
 
@@ -31,13 +32,13 @@ public class Proxyapi {
         this.users = new HashMap<>();
     }
 
-    public String sendMessageAsUser(String id, String message) throws IOException {
+    public String sendMessageAsUser(String id, String message, String role) throws IOException {
 
         LinkedList<Message> user = validateUser(id);
 
-        user.add(new Message("user", message));
+        user.add(new Message(role, message));
 
-        ChatCompletionRequest request = new ChatCompletionRequest("gpt-4-turbo", user);
+        ChatCompletionRequest request = new ChatCompletionRequest(GPT4TURBO, user);
 
         ChatCompletionResponse response = getChatCompletion(request);
 
@@ -46,6 +47,11 @@ public class Proxyapi {
         user.add(new Message("assistant", responseMessage));
 
         return responseMessage;
+    }
+
+    public void clearDialogue(String id) {
+
+        users.put(id, new LinkedList<>());
     }
 
     private ChatCompletionResponse getChatCompletion(ChatCompletionRequest request) throws JsonProcessingException {
@@ -71,6 +77,5 @@ public class Proxyapi {
             users.put(id, new LinkedList<>());
 
         return users.get(id);
-
     }
 }
