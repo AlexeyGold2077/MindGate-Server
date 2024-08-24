@@ -6,33 +6,48 @@ import com.alexeygold2077.MindGate.dto.proxyapi.Message;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.HttpHeaders;
-
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 @Component
 public class Proxyapi {
 
-    private static final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
+    private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
 
-    public static String sendMessage(LinkedList<Message> messages) throws IOException {
+    private final Map<String, LinkedList<Message>> users;
 
-        ChatCompletionRequest chatCompletionRequest = new ChatCompletionRequest("gpt-4-turbo", messages);
-
-        ChatCompletionResponse chatCompletionResponse = getChatCompletion(chatCompletionRequest);
-
-        messages.add(new Message("assistant", ));
-
-        return chatCompletionResponse.choices().get(0).message().content();
+    Proxyapi() {
+        this.users = new HashMap<>();
     }
 
-    public static ChatCompletionResponse getChatCompletion(ChatCompletionRequest request) throws JsonProcessingException {
+    public String sendMessageAsUser(String id, String message) throws IOException {
+
+        validateUser(id);
+
+        LinkedList<Message> user = users.get(id);
+
+        user.add(new Message("user", message));
+
+        ChatCompletionRequest request = new ChatCompletionRequest("gpt-4-turbo", user);
+
+        ChatCompletionResponse response = getChatCompletion(request);
+
+        String responseMessage = response.choices().get(0).message().content();
+
+        user.add(new Message("assistant", responseMessage));
+
+        return responseMessage;
+    }
+
+    private ChatCompletionResponse getChatCompletion(ChatCompletionRequest request) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -51,5 +66,12 @@ public class Proxyapi {
         System.out.println(response);
 
         return objectMapper.readValue(response, ChatCompletionResponse.class);
+    }
+
+    private void validateUser(String id) {
+
+        if (!users.containsKey(id))
+            users.put(id, new LinkedList<>());
+
     }
 }
