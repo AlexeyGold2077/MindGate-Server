@@ -16,14 +16,17 @@ public class Users {
 
     public void addMessage(String id, String message, String role) {
 
-        User user = validateUser(id);
-
-        user.getMessages().add(new Message(role, message));
+        validateUser(id).getMessages().add(new Message(role, message));
     }
 
     public String getModel(String id) {
 
         return validateUser(id).getModel();
+    }
+
+    public void setModel(String id, String model) {
+
+        validateUser(id).setModel(model);
     }
 
     public LinkedList<Message> getMessages(String id) {
@@ -33,9 +36,7 @@ public class Users {
 
     public void clearDialogue(String id) {
 
-        User user = validateUser(id);
-
-        user.setMessages(new LinkedList<>());
+        validateUser(id).setMessages(new LinkedList<>());
     }
 
     private User validateUser(String id) {

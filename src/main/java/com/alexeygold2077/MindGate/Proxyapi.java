@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.*;
 
 @Component
 public class Proxyapi {
@@ -23,6 +24,7 @@ public class Proxyapi {
 
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
 
+    private final String GPT4 = "gpt-4";
     private final String GPT4O = "gpt-4o";
     private final String GPT4TURBO = "gpt-4-turbo";
 
@@ -47,7 +49,23 @@ public class Proxyapi {
     }
 
     public void clearDialogue(String id) {
+
         users.clearDialogue(id);
+    }
+
+    public LinkedList<Message> getMessages(String id) {
+
+        return users.getMessages(id);
+    }
+
+    public String getModel(String id) {
+
+        return users.getModel(id);
+    }
+
+    public void setModel(String id, String model) {
+
+        users.setModel(id, model);
     }
 
     private ChatCompletionResponse getChatCompletion(ChatCompletionRequest request) throws JsonProcessingException {
