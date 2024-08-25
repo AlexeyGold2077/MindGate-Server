@@ -14,7 +14,7 @@ public class MainController {
 
     @PostMapping("/sendMessage")
     public String sendMessage(@RequestParam String id, @RequestParam String message, @RequestParam String role) throws IOException {
-        return proxyapi.sendMessageAsUser(id, message, role);
+        return proxyapi.sendMessage(id, message, role);
     }
 
     @PatchMapping("/clearDialogue")

@@ -23,6 +23,8 @@ public class Proxyapi {
     private final String PROXY_API_KEY;
 
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
+
+    private final String GPT4O = "gpt-4o";
     private final String GPT4TURBO = "gpt-4-turbo";
 
     private final Map<String, LinkedList<Message>> users;
@@ -32,7 +34,7 @@ public class Proxyapi {
         this.users = new HashMap<>();
     }
 
-    public String sendMessageAsUser(String id, String message, String role) throws IOException {
+    public String sendMessage(String id, String message, String role) throws IOException {
 
         LinkedList<Message> user = validateUser(id);
 
