@@ -13,47 +13,41 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 @Component
 public class Proxyapi {
 
     private final String PROXY_API_KEY;
 
+    private final Users users;
+
     private final String OPENAI_URL = "https://api.proxyapi.ru/openai/v1/chat/completions";
 
     private final String GPT4O = "gpt-4o";
     private final String GPT4TURBO = "gpt-4-turbo";
 
-    private final Map<String, LinkedList<Message>> users;
-
     Proxyapi(String PROXY_API_KEY) {
         this.PROXY_API_KEY = PROXY_API_KEY;
-        this.users = new HashMap<>();
+        this.users = new Users();
     }
 
     public String sendMessage(String id, String message, String role) throws IOException {
 
-        LinkedList<Message> user = validateUser(id);
+        users.addMessage(id, message, role);
 
-        user.add(new Message(role, message));
-
-        ChatCompletionRequest request = new ChatCompletionRequest(GPT4TURBO, user);
+        ChatCompletionRequest request = new ChatCompletionRequest(users.getModel(id), users.getMessages(id));
 
         ChatCompletionResponse response = getChatCompletion(request);
 
         String responseMessage = response.choices().get(0).message().content();
 
-        user.add(new Message("assistant", responseMessage));
+        users.addMessage(id, responseMessage, "assistant");
 
         return responseMessage;
     }
 
     public void clearDialogue(String id) {
-
-        users.put(id, new LinkedList<>());
+        users.clearDialogue(id);
     }
 
     private ChatCompletionResponse getChatCompletion(ChatCompletionRequest request) throws JsonProcessingException {
@@ -71,13 +65,5 @@ public class Proxyapi {
         String response = restTemplate.exchange(OPENAI_URL, HttpMethod.POST, httpEntity, String.class).getBody();
 
         return objectMapper.readValue(response, ChatCompletionResponse.class);
-    }
-
-    private LinkedList<Message> validateUser(String id) {
-
-        if (!users.containsKey(id))
-            users.put(id, new LinkedList<>());
-
-        return users.get(id);
     }
 }
