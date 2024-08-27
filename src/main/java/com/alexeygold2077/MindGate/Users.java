@@ -1,6 +1,6 @@
 package com.alexeygold2077.MindGate;
 
-import com.alexeygold2077.MindGate.dto.Message;
+import com.alexeygold2077.MindGate.dto.proxyapi.Message;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,7 +10,10 @@ public class Users {
 
     private final Map<String, User> userMap;
 
-    public Users() {
+    private final String DEFAULT_MODEL;
+
+    public Users(String defaultModel) {
+        DEFAULT_MODEL = defaultModel;
         this.userMap = new HashMap<>();
     }
 
@@ -42,7 +45,7 @@ public class Users {
     private User validateUser(String id) {
 
         if (!userMap.containsKey(id))
-            userMap.put(id, new User());
+            userMap.put(id, new User(DEFAULT_MODEL));
 
         return userMap.get(id);
     }

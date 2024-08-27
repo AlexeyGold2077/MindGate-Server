@@ -1,8 +1,9 @@
 package com.alexeygold2077.MindGate;
 
-import com.alexeygold2077.MindGate.dto.ChatCompletionRequest;
-import com.alexeygold2077.MindGate.dto.ChatCompletionResponse;
-import com.alexeygold2077.MindGate.dto.Message;
+import com.alexeygold2077.MindGate.dto.SendMessageDTO;
+import com.alexeygold2077.MindGate.dto.proxyapi.ChatCompletionRequest;
+import com.alexeygold2077.MindGate.dto.proxyapi.ChatCompletionResponse;
+import com.alexeygold2077.MindGate.dto.proxyapi.Message;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpEntity;
@@ -27,13 +28,16 @@ public class Proxyapi {
     private final String GPT4 = "gpt-4";
     private final String GPT4O = "gpt-4o";
     private final String GPT4TURBO = "gpt-4-turbo";
+    private final String GPT4OMINI = "gpt-4o-mini";
+
+    private final String DEFAULT_MODEL = GPT4OMINI;
 
     Proxyapi(String PROXY_API_KEY) {
         this.PROXY_API_KEY = PROXY_API_KEY;
-        this.users = new Users();
+        this.users = new Users(DEFAULT_MODEL);
     }
 
-    public String sendMessage(String id, String message, String role) throws IOException {
+    public SendMessageDTO sendMessage(String id, String message, String role) throws IOException {
 
         users.addMessage(id, message, role);
 
@@ -41,11 +45,14 @@ public class Proxyapi {
 
         ChatCompletionResponse response = getChatCompletion(request);
 
-        String responseMessage = response.choices().get(0).message().content();
+        users.addMessage(id, response.choices().get(0).message().content(), "assistant");
 
-        users.addMessage(id, responseMessage, "assistant");
-
-        return responseMessage;
+        return new SendMessageDTO(
+                response.choices().get(0).message().content(),
+                response.usage().prompt_tokens(),
+                response.usage().completion_tokens(),
+                response.usage().total_tokens()
+        );
     }
 
     public void clearDialogue(String id) {

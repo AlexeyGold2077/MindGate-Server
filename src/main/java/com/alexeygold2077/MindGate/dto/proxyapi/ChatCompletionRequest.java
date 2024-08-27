@@ -1,4 +1,4 @@
-package com.alexeygold2077.MindGate.dto;
+package com.alexeygold2077.MindGate.dto.proxyapi;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.alexeygold2077.MindGate;
 
-import com.alexeygold2077.MindGate.dto.Message;
+import com.alexeygold2077.MindGate.dto.proxyapi.Message;
 
 import java.util.LinkedList;
 
@@ -9,8 +9,8 @@ public class User {
     private String model;
     private LinkedList<Message> messages;
 
-    public User() {
-        this.model = "gpt-4o";
+    public User(String model) {
+        this.model = model;
         this.messages = new LinkedList<>();
     }
 

@@ -1,12 +1,12 @@
 package com.alexeygold2077.MindGate;
 
-import com.alexeygold2077.MindGate.dto.Message;
+import com.alexeygold2077.MindGate.dto.SendMessageDTO;
+import com.alexeygold2077.MindGate.dto.proxyapi.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -16,7 +16,7 @@ public class MainController {
     Proxyapi proxyapi;
 
     @PostMapping("/sendMessage")
-    public String sendMessage(@RequestParam String id, @RequestParam String message, @RequestParam String role) throws IOException {
+    public SendMessageDTO sendMessage(@RequestParam String id, @RequestParam String message, @RequestParam String role) throws IOException {
         return proxyapi.sendMessage(id, message, role);
     }
 
