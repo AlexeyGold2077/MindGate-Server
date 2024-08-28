@@ -42,6 +42,19 @@ public class Users {
         validateUser(id).setMessages(new LinkedList<>());
     }
 
+    public Integer getBalance(String id) {
+
+        return validateUser(id).getBalance();
+    }
+
+    public void addBalance(String id, Integer adding) {
+        validateUser(id).setBalance(validateUser(id).getBalance() + adding);
+    }
+
+    public void subtractBalance(String id, Integer subtrahend) {
+        validateUser(id).setBalance(validateUser(id).getBalance() - subtrahend);
+    }
+
     private User validateUser(String id) {
 
         if (!userMap.containsKey(id))

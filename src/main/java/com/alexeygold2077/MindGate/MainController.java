@@ -41,4 +41,15 @@ public class MainController {
         proxyapi.setModel(id, model);
         return "200";
     }
+
+    @GetMapping("/getBalance")
+    public Integer getBalance(@RequestParam String id) {
+        return proxyapi.getBalance(id);
+    }
+
+    @PatchMapping("/addBalance")
+    public String getBalance(@RequestParam String id, @RequestParam Integer amount) {
+        proxyapi.addBalance(id, amount);
+        return "200";
+    }
 }

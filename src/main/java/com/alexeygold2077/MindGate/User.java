@@ -8,10 +8,12 @@ public class User {
 
     private String model;
     private LinkedList<Message> messages;
+    private int balance;
 
     public User(String model) {
         this.model = model;
         this.messages = new LinkedList<>();
+        this.balance = 0;
     }
 
     public String getModel() {
@@ -28,5 +30,13 @@ public class User {
 
     public void setMessages(LinkedList<Message> messages) {
         this.messages = messages;
+    }
+
+    public Integer getBalance() {
+        return this.balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 }

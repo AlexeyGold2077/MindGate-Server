@@ -39,19 +39,32 @@ public class Proxyapi {
 
     public SendMessageDTO sendMessage(String id, String message, String role) throws IOException {
 
+        int spentWords = 0;
+
+        if (!checkAvailabilityForUser(id, message)) {
+            return new SendMessageDTO(
+                    "ERROR: insufficient balance",
+                    0,
+                    users.getBalance(id)
+            );
+        }
+
         users.addMessage(id, message, role);
+        spentWords += countWords(message);
 
         ChatCompletionRequest request = new ChatCompletionRequest(users.getModel(id), users.getMessages(id));
 
         ChatCompletionResponse response = getChatCompletion(request);
 
         users.addMessage(id, response.choices().get(0).message().content(), "assistant");
+        spentWords += countWords(response.choices().get(0).message().content());
+
+        users.subtractBalance(id, spentWords);
 
         return new SendMessageDTO(
                 response.choices().get(0).message().content(),
-                response.usage().prompt_tokens(),
-                response.usage().completion_tokens(),
-                response.usage().total_tokens()
+                response.usage().total_tokens(),
+                users.getBalance(id)
         );
     }
 
@@ -75,6 +88,16 @@ public class Proxyapi {
         users.setModel(id, model);
     }
 
+    public Integer getBalance(String id) {
+
+        return users.getBalance(id);
+    }
+
+    public void addBalance(String id, Integer amount) {
+
+        users.addBalance(id, amount);
+    }
+
     private ChatCompletionResponse getChatCompletion(ChatCompletionRequest request) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -90,5 +113,15 @@ public class Proxyapi {
         String response = restTemplate.exchange(OPENAI_URL, HttpMethod.POST, httpEntity, String.class).getBody();
 
         return objectMapper.readValue(response, ChatCompletionResponse.class);
+    }
+
+    private boolean checkAvailabilityForUser(String id, String message) {
+
+        return users.getBalance(id) >= countWords(message);
+    }
+
+    private int countWords(String str) {
+
+        return str.split("\\s+").length;
     }
 }
