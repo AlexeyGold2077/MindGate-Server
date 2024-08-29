@@ -1,7 +1,7 @@
 package com.alexeygold2077.MindGate.dto;
 
 public record SendMessageDTO(
-        String message,
-        int spent_tokens,
-        int userBalance
+        String response_message,
+        int spent_words,
+        String status_message
 ) {}

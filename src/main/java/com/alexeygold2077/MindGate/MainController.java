@@ -1,5 +1,7 @@
 package com.alexeygold2077.MindGate;
 
+import com.alexeygold2077.MindGate.dto.DefaultDTO;
+import com.alexeygold2077.MindGate.dto.DefaultDataDTO;
 import com.alexeygold2077.MindGate.dto.SendMessageDTO;
 import com.alexeygold2077.MindGate.dto.proxyapi.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,35 +23,35 @@ public class MainController {
     }
 
     @PatchMapping("/clearMessages")
-    public String clearDialogue(@RequestParam String id) {
+    public DefaultDTO<String> clearDialogue(@RequestParam String id) {
         proxyapi.clearDialogue(id);
-        return "200";
+        return new DefaultDTO<>("SUCCESS");
     }
 
     @GetMapping("/getMessages")
-    public LinkedList<Message> getMessages(@RequestParam String id) {
-        return proxyapi.getMessages(id);
+    public DefaultDataDTO<LinkedList<Message>> getMessages(@RequestParam String id) {
+        return new DefaultDataDTO<>(proxyapi.getMessages(id), "SUCCESS");
     }
 
     @GetMapping("/getModel")
-    public String getModel(@RequestParam String id) {
-        return proxyapi.getModel(id);
+    public DefaultDataDTO<String> getModel(@RequestParam String id) {
+        return new DefaultDataDTO<>(proxyapi.getModel(id), "SUCCESS");
     }
 
     @PatchMapping("/setModel")
-    public String setModel(@RequestParam String id, @RequestParam String model) {
+    public DefaultDTO<String> setModel(@RequestParam String id, @RequestParam String model) {
         proxyapi.setModel(id, model);
-        return "200";
+        return new DefaultDTO<>("SUCCESS");
     }
 
     @GetMapping("/getBalance")
-    public Integer getBalance(@RequestParam String id) {
-        return proxyapi.getBalance(id);
+    public DefaultDataDTO<Integer> getBalance(@RequestParam String id) {
+        return new DefaultDataDTO<>(proxyapi.getBalance(id), "SUCCESS");
     }
 
     @PatchMapping("/addBalance")
-    public String getBalance(@RequestParam String id, @RequestParam Integer amount) {
+    public DefaultDTO<String> getBalance(@RequestParam String id, @RequestParam Integer amount) {
         proxyapi.addBalance(id, amount);
-        return "200";
+        return new DefaultDTO<>("SUCCESS");
     }
 }

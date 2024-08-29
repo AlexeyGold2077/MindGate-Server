@@ -43,9 +43,9 @@ public class Proxyapi {
 
         if (!checkAvailabilityForUser(id, message)) {
             return new SendMessageDTO(
-                    "ERROR: insufficient balance",
+                    "",
                     0,
-                    users.getBalance(id)
+                    "ERROR: insufficient balance"
             );
         }
 
@@ -63,8 +63,8 @@ public class Proxyapi {
 
         return new SendMessageDTO(
                 response.choices().get(0).message().content(),
-                response.usage().total_tokens(),
-                users.getBalance(id)
+                spentWords,
+                "SUCCESS"
         );
     }
 
