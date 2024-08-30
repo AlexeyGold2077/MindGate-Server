@@ -1,15 +1,16 @@
 package com.alexeygold2077.MindGate.dto;
 
 public enum StatusCode {
-    SUCCESS("SUCCESS");
+    SUCCESS("SUCCESS"),
+    INSUFFICIENT_BALANCE("INSUFFICIENT BALANCE");
 
-    private final String status_str;
+    private final String code;
 
-    StatusCode(String status_str) {
-        this.status_str = status_str;
+    StatusCode(String code) {
+        this.code = code;
     }
 
-    public String getStatus_str() {
-        return status_str;
+    public String getCode() {
+        return code;
     }
 }

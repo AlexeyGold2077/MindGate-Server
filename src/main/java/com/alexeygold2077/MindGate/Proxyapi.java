@@ -1,6 +1,7 @@
 package com.alexeygold2077.MindGate;
 
 import com.alexeygold2077.MindGate.dto.SendMessageDTO;
+import com.alexeygold2077.MindGate.dto.StatusCode;
 import com.alexeygold2077.MindGate.dto.proxyapi.ChatCompletionRequest;
 import com.alexeygold2077.MindGate.dto.proxyapi.ChatCompletionResponse;
 import com.alexeygold2077.MindGate.dto.proxyapi.Message;
@@ -45,7 +46,7 @@ public class Proxyapi {
             return new SendMessageDTO(
                     "",
                     0,
-                    "ERROR: insufficient balance"
+                    StatusCode.INSUFFICIENT_BALANCE
             );
         }
 
@@ -66,7 +67,7 @@ public class Proxyapi {
         return new SendMessageDTO(
                 response.choices().get(0).message().content(),
                 spentWords,
-                "SUCCESS"
+                StatusCode.SUCCESS
         );
     }
 
