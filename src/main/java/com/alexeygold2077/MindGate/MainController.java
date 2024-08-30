@@ -1,8 +1,6 @@
 package com.alexeygold2077.MindGate;
 
-import com.alexeygold2077.MindGate.dto.DefaultDTO;
-import com.alexeygold2077.MindGate.dto.DefaultDataDTO;
-import com.alexeygold2077.MindGate.dto.SendMessageDTO;
+import com.alexeygold2077.MindGate.dto.*;
 import com.alexeygold2077.MindGate.dto.proxyapi.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,35 +21,35 @@ public class MainController {
     }
 
     @PatchMapping("/clearMessages")
-    public DefaultDTO<String> clearDialogue(@RequestParam String id) {
+    public BaseDTO clearDialogue(@RequestParam String id) {
         proxyapi.clearDialogue(id);
-        return new DefaultDTO<>("SUCCESS");
+        return new BaseDTO(StatusCode.SUCCESS);
     }
 
     @GetMapping("/getMessages")
-    public DefaultDataDTO<LinkedList<Message>> getMessages(@RequestParam String id) {
-        return new DefaultDataDTO<>(proxyapi.getMessages(id), "SUCCESS");
+    public SimpleDTO<LinkedList<Message>> getMessages(@RequestParam String id) {
+        return new SimpleDTO<>(proxyapi.getMessages(id), StatusCode.SUCCESS);
     }
 
     @GetMapping("/getModel")
-    public DefaultDataDTO<String> getModel(@RequestParam String id) {
-        return new DefaultDataDTO<>(proxyapi.getModel(id), "SUCCESS");
+    public SimpleDTO<String> getModel(@RequestParam String id) {
+        return new SimpleDTO<>(proxyapi.getModel(id), StatusCode.SUCCESS);
     }
 
     @PatchMapping("/setModel")
-    public DefaultDTO<String> setModel(@RequestParam String id, @RequestParam String model) {
+    public BaseDTO setModel(@RequestParam String id, @RequestParam String model) {
         proxyapi.setModel(id, model);
-        return new DefaultDTO<>("SUCCESS");
+        return new BaseDTO(StatusCode.SUCCESS);
     }
 
     @GetMapping("/getBalance")
-    public DefaultDataDTO<Integer> getBalance(@RequestParam String id) {
-        return new DefaultDataDTO<>(proxyapi.getBalance(id), "SUCCESS");
+    public SimpleDTO<Integer> getBalance(@RequestParam String id) {
+        return new SimpleDTO<>(proxyapi.getBalance(id), StatusCode.SUCCESS);
     }
 
     @PatchMapping("/addBalance")
-    public DefaultDTO<String> getBalance(@RequestParam String id, @RequestParam Integer amount) {
+    public BaseDTO getBalance(@RequestParam String id, @RequestParam Integer amount) {
         proxyapi.addBalance(id, amount);
-        return new DefaultDTO<>("SUCCESS");
+        return new BaseDTO(StatusCode.SUCCESS);
     }
 }

@@ -54,6 +54,8 @@ public class Proxyapi {
 
         ChatCompletionRequest request = new ChatCompletionRequest(users.getModel(id), users.getMessages(id));
 
+        System.out.println(request);
+
         ChatCompletionResponse response = getChatCompletion(request);
 
         users.addMessage(id, response.choices().get(0).message().content(), "assistant");
